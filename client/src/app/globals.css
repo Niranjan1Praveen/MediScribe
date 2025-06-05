@@ -162,30 +162,15 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply text-foreground bg-background bg-repeat;
+    @apply text-background bg-foreground;
   }
 }
 /* Global Styles */
 html {
   scroll-behavior: smooth;
 }
-.bg-gradient-to-bottom {
-  @apply bg-[url('../assets/images/Noise.webp'),linear-gradient(to_bottom,var(--color-primary-1500),var(--color-primary-1300))] bg-repeat;
-}
-
-.bg-gradient-to-top {
-  @apply bg-[url('../assets/images/Noise.webp'),linear-gradient(to_top,var(--color-primary-1500),var(--color-primary-1300))] bg-repeat;
-}
-.transition-properties {
-  @apply transition-all duration-150;
-}
-
-.primary-glow {
-  @apply drop-shadow-[0_0px_25px_var(--color-primary-glow)];
-}
-
-.primary-glow-hover {
-  @apply hover:drop-shadow-[0_0px_25px_var(--color-primary-50-glow)];
+.section-m1{
+  margin: 10px 40px;
 }
 /* Hero Animations */
 .fade-up {

@@ -16,13 +16,10 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="py-24 px-4 flex items-center justify-center" id="features">
+    <section className="py-18 px-4 flex items-center justify-center" id="features">
       <div className="container">
-        <div className="flex justify-center">
-          <Tags title={"Platform Features"} />
-        </div>
         <h2 className="text-3xl font-medium text-center mt-6 max-w-3xl mx-auto">
-          Explore <span className="text-primary-400">Adversarial Vulnerabilities</span> in AI
+          How it works?
         </h2>
 
         {/* Feature Cards */}
@@ -75,20 +72,7 @@ export default function Features() {
           </FeatureCard>
         </div>
 
-        {/* Other Features */}
-        <div className="mt-8 flex flex-wrap gap-3 justify-center">
-          {features.map((feature) => (
-            <div
-              key={feature}
-              className="bg-primary-1300 border-primary/10 inline-flex gap-3 items-center px-3 md:px-5 py-1.5 md:py-2 rounded-2xl hover:scale-105 transition duration-500 group"
-            >
-              <span className="bg-primary-400 text-neutral-950 size-5 rounded-full inline-flex items-center justify-center text-xl group-hover:rotate-45 transition duration-500">
-                &#10038;
-              </span>
-              <span className="font-medium md:text-lg">{feature}</span>
-            </div>
-          ))}
-        </div>
+       
       </div>
     </section>
   );

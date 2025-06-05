@@ -16,19 +16,19 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <header className="px-4 flex items-center justify-center fixed w-full top-0 z-100 backdrop-blur">
+      <header className="px-4 py-4 flex items-center justify-center z-100 backdrop-blur">
         <div className="container">
           <div>
             <div className="grid grid-cols-2 lg:grid-cols-3 p-2 items-center px-4 md:pr-2">
-              <div className="flex items-center">
+              <div className="flex items-center gap-2">
                 <Image
                   src={logo}
                   alt="Logo Icon"
-                  className="h-18 w-18"
+                  className="h-14 w-12"
                 />
-                <h2 className="font-bold text-2xl md:inline-flex hidden">
-                  AdversaNet
-                </h2>
+                <span className="bg-gradient-to-r from-[#3EDFA3] via-[#30F6F0] to-[#5EF7BA] bg-clip-text text-2xl md:inline-flex hidden">
+                  MediScribe
+                </span>
               </div>
               <div className="lg:flex justify-center items-center hidden">
                 <nav className="flex gap-6 font-medium">
@@ -133,7 +133,6 @@ export default function Navbar() {
           </div>
         </div>
       </header>
-      <div className="pb-[86px] md:pb-[98px] lg:pb-[130px]"></div>
     </>
   );
 }

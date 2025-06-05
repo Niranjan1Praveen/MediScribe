@@ -15,11 +15,13 @@ export default function Footer() {
         <div className="flex flex-col gap-2 items-center text-center md:items-start">
           <div className="flex items-center">
             <Image src={logo} alt="Logo Icon" className="h-auto w-20" />
-            <h2 className="font-bold text-2xl md:inline-flex hidden text-[#35ccbe]">
-              AdversaNet
-            </h2>
+            <p className="text-2xl font-bold text-white/20 text-center leading-relaxed md:inline-flex hidden">
+                <span className="bg-gradient-to-r from-[#3EDFA3] via-[#30F6F0] to-[#5EF7BA] bg-clip-text">
+                  MediScribe
+                </span>
+              </p>
           </div>
-          <small className="text-white/50">
+          <small>
             The source code is available on{" "}
             <Link href={"https://github.com/Niranjan1Praveen/NTCC-2025.git"} className="underline italic">
               GitHub.
@@ -31,7 +33,7 @@ export default function Footer() {
             <a
               href={link.href}
               key={link.label}
-              className="text-white/50 text-sm hover:underline"
+              className="text-sm hover:underline"
             >
               {link.label}
             </a>
