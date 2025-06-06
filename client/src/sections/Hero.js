@@ -1,10 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import heroDesign from "@/assets/images/heroDesign.png";
 import Image from "next/image";
 import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
@@ -13,7 +12,7 @@ export default function Hero() {
         <div className="w-full md:w-3/4">
           <div className="flex">
             <div className="inline-flex py-1 px-3 text-center bg-gradient-to-r from-[#3EDFA3] via-[#30F6F0] to-[#5EF7BA] rounded-full text-neutral-900 font-semibold">
-              ⚕️ Empowering Clinicians with Voice & AI
+              🤖 Empowering Clinicians with Voice & AI
             </div>
           </div>
 
@@ -28,20 +27,19 @@ export default function Hero() {
             paperwork.
           </p>
 
-
-            <RegisterLink>
-              <Button
-                type="submit"
-                variant="signup"
-                size="sm"
-                className="whitespace-nowrap mt-6 rounded-md"
-              >
-                Start Now
-              </Button>
-            </RegisterLink>
+          <RegisterLink>
+            <Button
+              type="submit"
+              variant="signup"
+              size="sm"
+              className="whitespace-nowrap mt-6 rounded-md"
+            >
+              Get Started
+            </Button>
+          </RegisterLink>
         </div>
 
-        <div className="w-full md:w-1/2 flex justify-center md:justify-end">
+        <div className="w-full md:w-1/2 justify-center hidden md:flex md:justify-end">
           <motion.div
             animate={{
               y: [0, -10, 0], // Moves from 0 to -10px and back to 0
@@ -55,8 +53,9 @@ export default function Hero() {
             <Image
               src={heroDesign}
               alt="Hero Design"
-              width={500}
-              height={500}
+              className="rounded-xl"
+              width={600}
+              height={600}
               priority
             />
           </motion.div>

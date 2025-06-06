@@ -6,7 +6,7 @@ function FeatureCard({ title, description, children, className }) {
   return (
     <Card
       className={twMerge(
-        "p-6 rounded-3xl bg-foreground",
+        "p-6 rounded-3xl",
         className
       )}
     >

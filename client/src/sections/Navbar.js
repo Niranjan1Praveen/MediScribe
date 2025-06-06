@@ -21,14 +21,12 @@ export default function Navbar() {
           <div>
             <div className="grid grid-cols-2 lg:grid-cols-3 p-2 items-center px-4 md:pr-2">
               <div className="flex items-center gap-2">
-                <Image
-                  src={logo}
-                  alt="Logo Icon"
-                  className="h-14 w-12"
-                />
-                <span className="bg-gradient-to-r from-[#3EDFA3] via-[#30F6F0] to-[#5EF7BA] bg-clip-text text-2xl md:inline-flex hidden">
-                  MediScribe
-                </span>
+                <Image src={logo} alt="Logo Icon" className="h-14 w-12" />
+                <p className="text-2xl font-semibold text-white/20 text-center leading-relaxed md:inline-flex hidden">
+                  <span className="bg-gradient-to-r from-[#28B983] via-[#20C9CC] to-[#3AC49B] bg-clip-text">
+                    MediScribe
+                  </span>
+                </p>
               </div>
               <div className="lg:flex justify-center items-center hidden">
                 <nav className="flex gap-6 font-medium">
@@ -121,9 +119,7 @@ export default function Navbar() {
                         Log in
                       </Button>
                     </LoginLink>
-                    <Button
-                      className="bg-primary-500 cursor-pointer md:inline-flex items-center"
-                    >
+                    <Button className="bg-primary-500 cursor-pointer md:inline-flex items-center">
                       <a href="#signUpOptions">Sign Up</a>
                     </Button>
                   </div>

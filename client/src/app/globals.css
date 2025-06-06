@@ -162,7 +162,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply text-background bg-foreground;
+    @apply text-foreground bg-background;
   }
 }
 /* Global Styles */

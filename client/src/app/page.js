@@ -2,7 +2,6 @@ import Faqs from "@/sections/Faqs";
 import Features from "@/sections/Features";
 import Footer from "@/sections/Footer";
 import Hero from "@/sections/Hero";
-import Introduction from "@/sections/Introduction";
 import LogoTicker from "@/sections/LogoTicker";
 import Navbar from "@/sections/Navbar";
 
@@ -11,12 +10,12 @@ const Home = () => {
     <main>
       <Navbar />
       <Hero />
-      <div className="bg-gradient-to-br from-teal-300 via-blue-400 to-blue-600">
+      <Features />
+      {/* <div className="bg-gradient-to-r from-[#28B983] via-[#20C9CC] to-[#3AC49B]"> */}
         <LogoTicker />
-        <Features />
-      </div>
-      <Footer />
-
+        <Faqs />
+        <Footer />
+      {/* </div> */}
     </main>
   );
 };

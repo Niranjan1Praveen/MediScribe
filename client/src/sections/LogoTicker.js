@@ -3,7 +3,6 @@ import { Fragment } from "react";
 import veltrix from "@/assets/images/marketLeaders/1.svg";
 import noveNtra from "@/assets/images/marketLeaders/2.svg";
 import aurevia from "@/assets/images/marketLeaders/3.svg";
-import zentara from "@/assets/images/marketLeaders/4.svg";
 import trionyx from "@/assets/images/marketLeaders/5.svg";
 
 
@@ -13,11 +12,9 @@ const logos = [
   { name: "Veltrix", image: veltrix },
   { name: "NoveNtra", image: noveNtra },
   { name: "Aurevia", image: aurevia },
-  { name: "Zentara", image: zentara },
   { name: "Trionyx", image: trionyx },
 
 ];
-
 export default function LogoTicker() {
   return (
     <section className="py-20 px-4 overflow-x-clip flex items-center justify-center">

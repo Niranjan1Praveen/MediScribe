@@ -1,6 +1,5 @@
 "use client"
 import { faqs } from "../assets/data/faqs"
-import Tags from "@/components/ui/tags";
 
 import React from "react"
 import {
@@ -12,15 +11,11 @@ import {
 
 export default function Faqs() {
   return (
-    <section className="text-white py-16 px-4 md:px-12" id="faqs">
+    <section className="py-16 px-4 md:px-12" id="faqs">
       <div className="max-w-3xl mx-auto text-center">
-        <div className="flex justify-center mb-6">
-                  <Tags title={"FAQs"}/>
-          </div>
-        
-        <h2 className="text-4xl font-bold">
+        <h2 className="text-4xl text-foreground font-bold">
           Questions? We&rsquo;ve got{" "}
-          <span className="text-primary-400">answers</span>
+          <span className="text-[#5EF7BA]">answers</span>
         </h2>
       </div>
       <div className="mt-10 max-w-2xl mx-auto">
@@ -29,12 +24,12 @@ export default function Faqs() {
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="rounded-xl bg-primary-1300 px-6"
+              className="rounded-xl px-6 shadow-md"
             >
-              <AccordionTrigger className="text-white py-6">
+              <AccordionTrigger className="py-6">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-neutral-400">
+              <AccordionContent>
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
