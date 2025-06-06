@@ -9,6 +9,41 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Test {
-  email String @unique
+model Main {
+  VisitID          Int    @id @default(autoincrement())
+  PatientID        Int
+  DoctorID         Int
+  ClinicID         Int
+  Conversation     String
+  DigiPrescription String
+  DietPlan         String
+  ExercisePlan     String
+  // Relations
+  patient Patient @relation(fields: [PatientID], references: [PatientID])
+  doctor  Doctor  @relation(fields: [DoctorID], references: [DoctorID])
+  clinic  Clinic  @relation(fields: [ClinicID], references: [ClinicID])
+}
+
+model Patient {
+  PatientID Int    @id @default(autoincrement())
+  PatientName      String
+
+  // Back relation to Main
+  mains Main[]
+}
+
+model Doctor {
+  DoctorID Int    @id @default(autoincrement())
+  Name     String
+
+  // Back relation to Main
+  mains Main[]
+}
+
+model Clinic {
+  ClinicID Int    @id @default(autoincrement())
+  Name     String
+
+  // Back relation to Main
+  mains Main[]
 }
