@@ -38,19 +38,9 @@ const items = [
     icon: Home,
   },
   {
-    title: "Attack Playground",
-    url: "/dashboard/playground",
-    icon: FlaskConical, 
-  },
-  {
-    title: "Analytics",
-    url: "/dashboard/analytics",
-    icon: BarChart3, 
-  },
-  {
-    title: "Documentation",
-    url: "/dashboard/documentation",
-    icon: BookOpenText, 
+    title: "Live Conversation",
+    url: "/dashboard/liveConversation",
+    icon: Home,
   },
 ];
 

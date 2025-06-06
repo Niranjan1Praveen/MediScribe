@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import heroDesign from "@/assets/images/heroDesign.svg";
+import heroDesign from "@/assets/images/heroDesign.png";
 import Image from "next/image";
 import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs";
 import { motion } from "framer-motion";
@@ -41,23 +41,23 @@ export default function Hero() {
 
         <div className="w-full md:w-1/2 justify-center hidden md:flex md:justify-end">
           <motion.div
-            animate={{
-              y: [0, -10, 0],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+            // animate={{
+            //   y: [0, -10, 0],
+            // }}
+            // transition={{
+            //   duration: 3,
+            //   repeat: Infinity,
+            //   ease: "easeInOut",
+            // }}
             className="relative"
           >
             {/* Glow effect using a gradient background */}
-            {/* <div className="absolute -inset-2 z-0 rounded-2xl blur-xl opacity-80 animate-pulse bg-gradient-to-r from-purple-400 via-pink-400 to-purple-500"></div> */}
+            <div className="absolute -inset-2 z-0 rounded-full blur-xl opacity-80 bg-gradient-to-r from-[#3EDFA3] via-[#30F6F0] to-[#5EF7BA]"></div>
 
             <Image
               src={heroDesign}
               alt="Hero Design"
-              className="relative z-10 rounded-xl"
+              className="relative z-10 rounded-full"
               width={800}
               height={800}
               priority
