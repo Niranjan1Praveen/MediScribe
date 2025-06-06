@@ -29,14 +29,4 @@ export const faqs = [
     answer:
       "Yes, users can adjust attack-specific parameters like epsilon (perturbation magnitude) to see how sensitivity affects prediction accuracy and robustness.",
   },
-  {
-    question: "Is this tool suitable for teaching and research?",
-    answer:
-      "Absolutely. The platform is designed to be intuitive for classroom demonstrations and robust enough for use in research experiments on adversarial robustness.",
-  },
-  {
-    question: "Will more features be added in the future?",
-    answer:
-      "Yes! Future features may include adversarial defense strategies, experiment saving/sharing, model comparison dashboards, and support for non-image classifiers.",
-  },
 ];

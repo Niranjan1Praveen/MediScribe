@@ -1,11 +1,16 @@
+"use client";
 import FeatureCard from "@/components/ui/featureCard";
-import Image from "next/image";
 import Key from "@/components/ui/key";
-import featureDesign from "@/assets/images/featureDesign.png";
-
+import { File, FileText, Mic } from "lucide-react";
+import { motion } from "framer-motion";
+const barHeights = [20, 32, 16, 40, 24, 40, 16, 32, 20];
 export default function Features() {
+  
   return (
-    <section className="py-18 px-4 flex items-center justify-center" id="features">
+    <section
+      className="py-18 px-4 flex items-center justify-center"
+      id="features"
+    >
       <div className="container">
         <h2 className="text-3xl font-medium text-center mt-6 max-w-3xl mx-auto">
           How MediScribe Works?
@@ -21,8 +26,36 @@ export default function Features() {
             }
             className="md:col-span-2 lg:col-span-1"
           >
-            <div className="aspect-video flex items-center justify-center">
-              <Image src={featureDesign} className="rounded-xl" height={650} width={650} alt="Clinical transcription dashboard" />
+            <div className="aspect-video flex items-center justify-center gap-8 rounded-xl p-6">
+              {/* Mic Button */}
+              <div className="bg-[#5EF7BA] rounded-full w-16 h-16 flex items-center justify-center">
+                <Mic className="w-8 h-8 text-black/80" />
+              </div>
+
+              {/* Waveform */}
+              <div className="flex items-center gap-[3px]">
+                {barHeights.map((height, i) => (
+                  <motion.div
+                    key={i}
+                    className="w-1 bg-[#5EF7BA] rounded"
+                    style={{ height: `${height}px` }}
+                    animate={{
+                      scaleY: [1, 1.8, 1],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      delay: i * 0.1, 
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* File Button */}
+              <div className="bg-[#5EF7BA] rounded-full w-16 h-16 flex items-center justify-center">
+                <FileText className="w-7 h-7 text-black/80" />
+              </div>
             </div>
           </FeatureCard>
 

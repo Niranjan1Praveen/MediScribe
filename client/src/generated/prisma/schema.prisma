@@ -9,11 +9,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model User {
-  id           String   @id @unique
-  email        String   @unique
-  firstName    String
-  lastName     String
-  profileImage String
-  createdAt    DateTime @default(now())
+model Test {
+  email String @unique
 }

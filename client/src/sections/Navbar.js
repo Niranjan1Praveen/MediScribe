@@ -119,7 +119,7 @@ export default function Navbar() {
                         Log in
                       </Button>
                     </LoginLink>
-                    <Button className="bg-primary-500 cursor-pointer md:inline-flex items-center">
+                    <Button className="bg-[#5EF7BA] cursor-pointer md:inline-flex items-center">
                       <a href="#signUpOptions">Sign Up</a>
                     </Button>
                   </div>
