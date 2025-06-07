@@ -14,15 +14,16 @@ export default function AppLiveConversation() {
   const [transcript, setTranscript] = useState("");
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
+  const [language, setLanguage] = useState("en-US");
   const recognitionRef = useRef(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = (window).webkitSpeechRecognition;
+    if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
+      const SpeechRecognition = window.webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
       recognition.continuous = true;
       recognition.interimResults = false;
-      recognition.lang = 'en-US';
+      recognition.lang = language;
 
       recognition.onresult = (event) => {
         let finalTranscript = "";
@@ -31,7 +32,7 @@ export default function AppLiveConversation() {
             finalTranscript += event.results[i][0].transcript;
           }
         }
-        setTranscript(prev => prev + finalTranscript + " ");
+        setTranscript((prev) => prev + finalTranscript + " ");
       };
 
       recognition.onerror = (event) => {
@@ -40,14 +41,17 @@ export default function AppLiveConversation() {
 
       recognitionRef.current = recognition;
     }
-  }, []);
+  }, [language]);
 
   const handleStartRecording = () => {
     setRecording(true);
     setStartTime(Date.now());
     setEndTime(null);
     setTranscript("");
-    recognitionRef.current?.start();
+    if (recognitionRef.current) {
+      recognitionRef.current.lang = language;
+      recognitionRef.current.start();
+    }
   };
 
   const handleStopRecording = () => {
@@ -68,15 +72,28 @@ export default function AppLiveConversation() {
     <div className="flex items-center justify-center p-4">
       <div className="max-w-4xl w-full flex flex-col md:flex-row gap-8 items-center justify-center">
         <div className="flex-1 flex flex-col items-center">
-          <h2 className="text-2xl font-semibold text-primary mb-1">Live Conversation Capture</h2>
-          <p className="text-sm text-muted-foreground mb-6">Doctor & Patient Dialogue</p>
-
-          <Button 
-            className="mb-8 bg-cyan-500 hover:bg-cyan-600"
-            onClick={recording ? handleStopRecording : handleStartRecording}
-          >
-            {recording ? "Stop Recording" : "Get Started"}
-          </Button>
+          <h2 className="text-2xl font-semibold text-primary mb-1">
+            Live Conversation Capture
+          </h2>
+          <p className="text-sm text-muted-foreground mb-2">
+            Doctor & Patient Dialogue
+          </p>
+          <div className="flex items-center justify-between gap-10 my-4">
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              className="rounded-md p-2"
+            >
+              <option value="en-US" className="text-black">English</option>
+              <option value="hi-IN" className="text-black">Hindi</option>
+            </select>
+            <Button
+              className="bg-cyan-500 hover:bg-cyan-600"
+              onClick={recording ? handleStopRecording : handleStartRecording}
+            >
+              {recording ? "Stop Recording" : "Get Started"}
+            </Button>
+          </div>
 
           <div className="relative mb-6">
             {recording && (
@@ -97,13 +114,21 @@ export default function AppLiveConversation() {
                   className="w-1 bg-cyan-500 rounded"
                   style={{ height: `${height}px` }}
                   animate={{ scaleY: [1, 1.8, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatType: "loop", delay: i * 0.1 }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    delay: i * 0.1,
+                  }}
                 />
               ))}
             </div>
           )}
 
-          <div className="w-full max-w-sm h-1 bg-cyan-500 rounded-full my-5" style={{ width: '80%' }} />
+          <div
+            className="w-full max-w-sm h-1 bg-cyan-500 rounded-full my-5"
+            style={{ width: "80%" }}
+          />
 
           {startTime && (
             <p className="text-muted-foreground text-sm mb-1">
@@ -112,7 +137,10 @@ export default function AppLiveConversation() {
           )}
 
           {recording && (
-            <p className="text-sm text-cyan-600 cursor-pointer" onClick={handleStopRecording}>
+            <p
+              className="text-sm text-cyan-600 cursor-pointer"
+              onClick={handleStopRecording}
+            >
               Click to stop recording
             </p>
           )}
@@ -120,7 +148,7 @@ export default function AppLiveConversation() {
           {!recording && transcript && (
             <div className="mt-4 space-y-2 text-center">
               <p className="text-sm text-muted-foreground">Transcript:</p>
-              <div className="text-sm p-2 whitespace-pre-wrap w-full max-w-md">
+              <div className="text-sm p-2  rounded-md whitespace-pre-wrap w-full max-w-md">
                 {transcript}
               </div>
             </div>
@@ -137,7 +165,12 @@ export default function AppLiveConversation() {
               </Avatar>
               <p className="font-medium">Dr. John Smith</p>
               <p className="text-sm text-muted-foreground">Cardiology</p>
-              <Button variant="outline" className="mt-2 text-cyan-600 border-cyan-500 hover:bg-cyan-50">Cardiology</Button>
+              <Button
+                variant="outline"
+                className="mt-2 text-cyan-600 border-cyan-500 hover:bg-cyan-50"
+              >
+                Cardiology
+              </Button>
             </CardContent>
           </Card>
 

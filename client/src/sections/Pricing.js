@@ -1,23 +1,66 @@
 "use client";
 import React from "react";
-import { pricingPlans } from "@/assets/data/pricing";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import { motion } from "framer-motion";
 
-function Pricing(props) {
+const pricingPlans = [
+  {
+    title: "Starter",
+    price: "₹0",
+    frequency: "/month",
+    buttonText: "Get Started",
+    features: [
+      "Real-time voice transcription (limited)",
+      "Basic clinical note generation",
+      "Up to 10 patient records",
+      "Standard support",
+    ],
+    popular: false,
+  },
+  {
+    title: "Pro Clinic",
+    price: "₹1,499",
+    frequency: "/month",
+    buttonText: "Upgrade Now",
+    features: [
+      "Unlimited transcriptions with Whisper",
+      "AI-generated digital prescriptions",
+      "Personalized diet & exercise plans",
+      "Doctor review & approval interface",
+      "Basic analytics & reporting",
+      "Priority support",
+    ],
+    popular: true,
+  },
+  {
+    title: "Enterprise",
+    price: "Custom",
+    frequency: "/month",
+    buttonText: "Contact Sales",
+    features: [
+      "Multi-user access with Admin dashboard",
+      "FHIR-based EMR integration",
+      "Custom branding & modules",
+      "Advanced analytics dashboard",
+      "On-premise deployment (optional)",
+      "Dedicated account manager",
+    ],
+    popular: false,
+  },
+];
+
+function Pricing() {
   return (
     <section className="py-24 px-4 flex items-center justify-center">
       <div className="container">
         <h3 className="text-3xl font-medium text-center mt-6 max-w-3xl mx-auto">
-          Pricing Plans
+          Subscription Plans for Every Practice
         </h3>
         <p className="text-center text-[22px] mt-5">
-          Free forever. Upgrade for unlimited tasks, better security, and
-          exclusive features
+          Start free and scale as your clinic grows with MediScribe's flexible SaaS plans.
         </p>
 
         <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 items-center lg:items-end mx-auto">
