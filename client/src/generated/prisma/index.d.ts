@@ -33,6 +33,11 @@ export type Doctor = $Result.DefaultSelection<Prisma.$DoctorPayload>
  * 
  */
 export type Clinic = $Result.DefaultSelection<Prisma.$ClinicPayload>
+/**
+ * Model Test
+ * 
+ */
+export type Test = $Result.DefaultSelection<Prisma.$TestPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -198,6 +203,16 @@ export class PrismaClient<
     * ```
     */
   get clinic(): Prisma.ClinicDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.test`: Exposes CRUD operations for the **Test** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Tests
+    * const tests = await prisma.test.findMany()
+    * ```
+    */
+  get test(): Prisma.TestDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -641,7 +656,8 @@ export namespace Prisma {
     Main: 'Main',
     Patient: 'Patient',
     Doctor: 'Doctor',
-    Clinic: 'Clinic'
+    Clinic: 'Clinic',
+    Test: 'Test'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -660,7 +676,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "main" | "patient" | "doctor" | "clinic"
+      modelProps: "main" | "patient" | "doctor" | "clinic" | "test"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -960,6 +976,80 @@ export namespace Prisma {
           }
         }
       }
+      Test: {
+        payload: Prisma.$TestPayload<ExtArgs>
+        fields: Prisma.TestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TestPayload>
+          }
+          findFirst: {
+            args: Prisma.TestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TestPayload>
+          }
+          findMany: {
+            args: Prisma.TestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TestPayload>[]
+          }
+          create: {
+            args: Prisma.TestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TestPayload>
+          }
+          createMany: {
+            args: Prisma.TestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TestPayload>[]
+          }
+          delete: {
+            args: Prisma.TestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TestPayload>
+          }
+          update: {
+            args: Prisma.TestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TestPayload>
+          }
+          deleteMany: {
+            args: Prisma.TestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TestPayload>[]
+          }
+          upsert: {
+            args: Prisma.TestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TestPayload>
+          }
+          aggregate: {
+            args: Prisma.TestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTest>
+          }
+          groupBy: {
+            args: Prisma.TestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TestCountArgs<ExtArgs>
+            result: $Utils.Optional<TestCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1048,6 +1138,7 @@ export namespace Prisma {
     patient?: PatientOmit
     doctor?: DoctorOmit
     clinic?: ClinicOmit
+    test?: TestOmit
   }
 
   /* Types for Logging */
@@ -1434,10 +1525,10 @@ export namespace Prisma {
     PatientID: number
     DoctorID: number
     ClinicID: number
-    Conversation: string
-    DigiPrescription: string
-    DietPlan: string
-    ExercisePlan: string
+    Conversation: string | null
+    DigiPrescription: string | null
+    DietPlan: string | null
+    ExercisePlan: string | null
     _count: MainCountAggregateOutputType | null
     _avg: MainAvgAggregateOutputType | null
     _sum: MainSumAggregateOutputType | null
@@ -1541,10 +1632,10 @@ export namespace Prisma {
       PatientID: number
       DoctorID: number
       ClinicID: number
-      Conversation: string
-      DigiPrescription: string
-      DietPlan: string
-      ExercisePlan: string
+      Conversation: string | null
+      DigiPrescription: string | null
+      DietPlan: string | null
+      ExercisePlan: string | null
     }, ExtArgs["result"]["main"]>
     composites: {}
   }
@@ -5589,6 +5680,996 @@ export namespace Prisma {
 
 
   /**
+   * Model Test
+   */
+
+  export type AggregateTest = {
+    _count: TestCountAggregateOutputType | null
+    _avg: TestAvgAggregateOutputType | null
+    _sum: TestSumAggregateOutputType | null
+    _min: TestMinAggregateOutputType | null
+    _max: TestMaxAggregateOutputType | null
+  }
+
+  export type TestAvgAggregateOutputType = {
+    ClinicID: number | null
+  }
+
+  export type TestSumAggregateOutputType = {
+    ClinicID: number | null
+  }
+
+  export type TestMinAggregateOutputType = {
+    ClinicID: number | null
+    Name: string | null
+  }
+
+  export type TestMaxAggregateOutputType = {
+    ClinicID: number | null
+    Name: string | null
+  }
+
+  export type TestCountAggregateOutputType = {
+    ClinicID: number
+    Name: number
+    _all: number
+  }
+
+
+  export type TestAvgAggregateInputType = {
+    ClinicID?: true
+  }
+
+  export type TestSumAggregateInputType = {
+    ClinicID?: true
+  }
+
+  export type TestMinAggregateInputType = {
+    ClinicID?: true
+    Name?: true
+  }
+
+  export type TestMaxAggregateInputType = {
+    ClinicID?: true
+    Name?: true
+  }
+
+  export type TestCountAggregateInputType = {
+    ClinicID?: true
+    Name?: true
+    _all?: true
+  }
+
+  export type TestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Test to aggregate.
+     */
+    where?: TestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tests to fetch.
+     */
+    orderBy?: TestOrderByWithRelationInput | TestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Tests
+    **/
+    _count?: true | TestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TestAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TestSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TestMaxAggregateInputType
+  }
+
+  export type GetTestAggregateType<T extends TestAggregateArgs> = {
+        [P in keyof T & keyof AggregateTest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTest[P]>
+      : GetScalarType<T[P], AggregateTest[P]>
+  }
+
+
+
+
+  export type TestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TestWhereInput
+    orderBy?: TestOrderByWithAggregationInput | TestOrderByWithAggregationInput[]
+    by: TestScalarFieldEnum[] | TestScalarFieldEnum
+    having?: TestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TestCountAggregateInputType | true
+    _avg?: TestAvgAggregateInputType
+    _sum?: TestSumAggregateInputType
+    _min?: TestMinAggregateInputType
+    _max?: TestMaxAggregateInputType
+  }
+
+  export type TestGroupByOutputType = {
+    ClinicID: number
+    Name: string
+    _count: TestCountAggregateOutputType | null
+    _avg: TestAvgAggregateOutputType | null
+    _sum: TestSumAggregateOutputType | null
+    _min: TestMinAggregateOutputType | null
+    _max: TestMaxAggregateOutputType | null
+  }
+
+  type GetTestGroupByPayload<T extends TestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TestGroupByOutputType[P]>
+            : GetScalarType<T[P], TestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    ClinicID?: boolean
+    Name?: boolean
+  }, ExtArgs["result"]["test"]>
+
+  export type TestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    ClinicID?: boolean
+    Name?: boolean
+  }, ExtArgs["result"]["test"]>
+
+  export type TestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    ClinicID?: boolean
+    Name?: boolean
+  }, ExtArgs["result"]["test"]>
+
+  export type TestSelectScalar = {
+    ClinicID?: boolean
+    Name?: boolean
+  }
+
+  export type TestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ClinicID" | "Name", ExtArgs["result"]["test"]>
+
+  export type $TestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Test"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      ClinicID: number
+      Name: string
+    }, ExtArgs["result"]["test"]>
+    composites: {}
+  }
+
+  type TestGetPayload<S extends boolean | null | undefined | TestDefaultArgs> = $Result.GetResult<Prisma.$TestPayload, S>
+
+  type TestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TestCountAggregateInputType | true
+    }
+
+  export interface TestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Test'], meta: { name: 'Test' } }
+    /**
+     * Find zero or one Test that matches the filter.
+     * @param {TestFindUniqueArgs} args - Arguments to find a Test
+     * @example
+     * // Get one Test
+     * const test = await prisma.test.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TestFindUniqueArgs>(args: SelectSubset<T, TestFindUniqueArgs<ExtArgs>>): Prisma__TestClient<$Result.GetResult<Prisma.$TestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Test that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TestFindUniqueOrThrowArgs} args - Arguments to find a Test
+     * @example
+     * // Get one Test
+     * const test = await prisma.test.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TestFindUniqueOrThrowArgs>(args: SelectSubset<T, TestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TestClient<$Result.GetResult<Prisma.$TestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Test that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TestFindFirstArgs} args - Arguments to find a Test
+     * @example
+     * // Get one Test
+     * const test = await prisma.test.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TestFindFirstArgs>(args?: SelectSubset<T, TestFindFirstArgs<ExtArgs>>): Prisma__TestClient<$Result.GetResult<Prisma.$TestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Test that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TestFindFirstOrThrowArgs} args - Arguments to find a Test
+     * @example
+     * // Get one Test
+     * const test = await prisma.test.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TestFindFirstOrThrowArgs>(args?: SelectSubset<T, TestFindFirstOrThrowArgs<ExtArgs>>): Prisma__TestClient<$Result.GetResult<Prisma.$TestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Tests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Tests
+     * const tests = await prisma.test.findMany()
+     * 
+     * // Get first 10 Tests
+     * const tests = await prisma.test.findMany({ take: 10 })
+     * 
+     * // Only select the `ClinicID`
+     * const testWithClinicIDOnly = await prisma.test.findMany({ select: { ClinicID: true } })
+     * 
+     */
+    findMany<T extends TestFindManyArgs>(args?: SelectSubset<T, TestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Test.
+     * @param {TestCreateArgs} args - Arguments to create a Test.
+     * @example
+     * // Create one Test
+     * const Test = await prisma.test.create({
+     *   data: {
+     *     // ... data to create a Test
+     *   }
+     * })
+     * 
+     */
+    create<T extends TestCreateArgs>(args: SelectSubset<T, TestCreateArgs<ExtArgs>>): Prisma__TestClient<$Result.GetResult<Prisma.$TestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Tests.
+     * @param {TestCreateManyArgs} args - Arguments to create many Tests.
+     * @example
+     * // Create many Tests
+     * const test = await prisma.test.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TestCreateManyArgs>(args?: SelectSubset<T, TestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Tests and returns the data saved in the database.
+     * @param {TestCreateManyAndReturnArgs} args - Arguments to create many Tests.
+     * @example
+     * // Create many Tests
+     * const test = await prisma.test.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Tests and only return the `ClinicID`
+     * const testWithClinicIDOnly = await prisma.test.createManyAndReturn({
+     *   select: { ClinicID: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TestCreateManyAndReturnArgs>(args?: SelectSubset<T, TestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Test.
+     * @param {TestDeleteArgs} args - Arguments to delete one Test.
+     * @example
+     * // Delete one Test
+     * const Test = await prisma.test.delete({
+     *   where: {
+     *     // ... filter to delete one Test
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TestDeleteArgs>(args: SelectSubset<T, TestDeleteArgs<ExtArgs>>): Prisma__TestClient<$Result.GetResult<Prisma.$TestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Test.
+     * @param {TestUpdateArgs} args - Arguments to update one Test.
+     * @example
+     * // Update one Test
+     * const test = await prisma.test.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TestUpdateArgs>(args: SelectSubset<T, TestUpdateArgs<ExtArgs>>): Prisma__TestClient<$Result.GetResult<Prisma.$TestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Tests.
+     * @param {TestDeleteManyArgs} args - Arguments to filter Tests to delete.
+     * @example
+     * // Delete a few Tests
+     * const { count } = await prisma.test.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TestDeleteManyArgs>(args?: SelectSubset<T, TestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Tests
+     * const test = await prisma.test.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TestUpdateManyArgs>(args: SelectSubset<T, TestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tests and returns the data updated in the database.
+     * @param {TestUpdateManyAndReturnArgs} args - Arguments to update many Tests.
+     * @example
+     * // Update many Tests
+     * const test = await prisma.test.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Tests and only return the `ClinicID`
+     * const testWithClinicIDOnly = await prisma.test.updateManyAndReturn({
+     *   select: { ClinicID: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TestUpdateManyAndReturnArgs>(args: SelectSubset<T, TestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Test.
+     * @param {TestUpsertArgs} args - Arguments to update or create a Test.
+     * @example
+     * // Update or create a Test
+     * const test = await prisma.test.upsert({
+     *   create: {
+     *     // ... data to create a Test
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Test we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TestUpsertArgs>(args: SelectSubset<T, TestUpsertArgs<ExtArgs>>): Prisma__TestClient<$Result.GetResult<Prisma.$TestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Tests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TestCountArgs} args - Arguments to filter Tests to count.
+     * @example
+     * // Count the number of Tests
+     * const count = await prisma.test.count({
+     *   where: {
+     *     // ... the filter for the Tests we want to count
+     *   }
+     * })
+    **/
+    count<T extends TestCountArgs>(
+      args?: Subset<T, TestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Test.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TestAggregateArgs>(args: Subset<T, TestAggregateArgs>): Prisma.PrismaPromise<GetTestAggregateType<T>>
+
+    /**
+     * Group by Test.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TestGroupByArgs['orderBy'] }
+        : { orderBy?: TestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Test model
+   */
+  readonly fields: TestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Test.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Test model
+   */
+  interface TestFieldRefs {
+    readonly ClinicID: FieldRef<"Test", 'Int'>
+    readonly Name: FieldRef<"Test", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Test findUnique
+   */
+  export type TestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Test
+     */
+    select?: TestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Test
+     */
+    omit?: TestOmit<ExtArgs> | null
+    /**
+     * Filter, which Test to fetch.
+     */
+    where: TestWhereUniqueInput
+  }
+
+  /**
+   * Test findUniqueOrThrow
+   */
+  export type TestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Test
+     */
+    select?: TestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Test
+     */
+    omit?: TestOmit<ExtArgs> | null
+    /**
+     * Filter, which Test to fetch.
+     */
+    where: TestWhereUniqueInput
+  }
+
+  /**
+   * Test findFirst
+   */
+  export type TestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Test
+     */
+    select?: TestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Test
+     */
+    omit?: TestOmit<ExtArgs> | null
+    /**
+     * Filter, which Test to fetch.
+     */
+    where?: TestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tests to fetch.
+     */
+    orderBy?: TestOrderByWithRelationInput | TestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tests.
+     */
+    cursor?: TestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tests.
+     */
+    distinct?: TestScalarFieldEnum | TestScalarFieldEnum[]
+  }
+
+  /**
+   * Test findFirstOrThrow
+   */
+  export type TestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Test
+     */
+    select?: TestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Test
+     */
+    omit?: TestOmit<ExtArgs> | null
+    /**
+     * Filter, which Test to fetch.
+     */
+    where?: TestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tests to fetch.
+     */
+    orderBy?: TestOrderByWithRelationInput | TestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tests.
+     */
+    cursor?: TestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tests.
+     */
+    distinct?: TestScalarFieldEnum | TestScalarFieldEnum[]
+  }
+
+  /**
+   * Test findMany
+   */
+  export type TestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Test
+     */
+    select?: TestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Test
+     */
+    omit?: TestOmit<ExtArgs> | null
+    /**
+     * Filter, which Tests to fetch.
+     */
+    where?: TestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tests to fetch.
+     */
+    orderBy?: TestOrderByWithRelationInput | TestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Tests.
+     */
+    cursor?: TestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tests.
+     */
+    skip?: number
+    distinct?: TestScalarFieldEnum | TestScalarFieldEnum[]
+  }
+
+  /**
+   * Test create
+   */
+  export type TestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Test
+     */
+    select?: TestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Test
+     */
+    omit?: TestOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Test.
+     */
+    data: XOR<TestCreateInput, TestUncheckedCreateInput>
+  }
+
+  /**
+   * Test createMany
+   */
+  export type TestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Tests.
+     */
+    data: TestCreateManyInput | TestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Test createManyAndReturn
+   */
+  export type TestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Test
+     */
+    select?: TestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Test
+     */
+    omit?: TestOmit<ExtArgs> | null
+    /**
+     * The data used to create many Tests.
+     */
+    data: TestCreateManyInput | TestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Test update
+   */
+  export type TestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Test
+     */
+    select?: TestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Test
+     */
+    omit?: TestOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Test.
+     */
+    data: XOR<TestUpdateInput, TestUncheckedUpdateInput>
+    /**
+     * Choose, which Test to update.
+     */
+    where: TestWhereUniqueInput
+  }
+
+  /**
+   * Test updateMany
+   */
+  export type TestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Tests.
+     */
+    data: XOR<TestUpdateManyMutationInput, TestUncheckedUpdateManyInput>
+    /**
+     * Filter which Tests to update
+     */
+    where?: TestWhereInput
+    /**
+     * Limit how many Tests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Test updateManyAndReturn
+   */
+  export type TestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Test
+     */
+    select?: TestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Test
+     */
+    omit?: TestOmit<ExtArgs> | null
+    /**
+     * The data used to update Tests.
+     */
+    data: XOR<TestUpdateManyMutationInput, TestUncheckedUpdateManyInput>
+    /**
+     * Filter which Tests to update
+     */
+    where?: TestWhereInput
+    /**
+     * Limit how many Tests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Test upsert
+   */
+  export type TestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Test
+     */
+    select?: TestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Test
+     */
+    omit?: TestOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Test to update in case it exists.
+     */
+    where: TestWhereUniqueInput
+    /**
+     * In case the Test found by the `where` argument doesn't exist, create a new Test with this data.
+     */
+    create: XOR<TestCreateInput, TestUncheckedCreateInput>
+    /**
+     * In case the Test was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TestUpdateInput, TestUncheckedUpdateInput>
+  }
+
+  /**
+   * Test delete
+   */
+  export type TestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Test
+     */
+    select?: TestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Test
+     */
+    omit?: TestOmit<ExtArgs> | null
+    /**
+     * Filter which Test to delete.
+     */
+    where: TestWhereUniqueInput
+  }
+
+  /**
+   * Test deleteMany
+   */
+  export type TestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Tests to delete
+     */
+    where?: TestWhereInput
+    /**
+     * Limit how many Tests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Test without action
+   */
+  export type TestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Test
+     */
+    select?: TestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Test
+     */
+    omit?: TestOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -5640,6 +6721,14 @@ export namespace Prisma {
   export type ClinicScalarFieldEnum = (typeof ClinicScalarFieldEnum)[keyof typeof ClinicScalarFieldEnum]
 
 
+  export const TestScalarFieldEnum: {
+    ClinicID: 'ClinicID',
+    Name: 'Name'
+  };
+
+  export type TestScalarFieldEnum = (typeof TestScalarFieldEnum)[keyof typeof TestScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -5654,6 +6743,14 @@ export namespace Prisma {
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -5714,10 +6811,10 @@ export namespace Prisma {
     PatientID?: IntFilter<"Main"> | number
     DoctorID?: IntFilter<"Main"> | number
     ClinicID?: IntFilter<"Main"> | number
-    Conversation?: StringFilter<"Main"> | string
-    DigiPrescription?: StringFilter<"Main"> | string
-    DietPlan?: StringFilter<"Main"> | string
-    ExercisePlan?: StringFilter<"Main"> | string
+    Conversation?: StringNullableFilter<"Main"> | string | null
+    DigiPrescription?: StringNullableFilter<"Main"> | string | null
+    DietPlan?: StringNullableFilter<"Main"> | string | null
+    ExercisePlan?: StringNullableFilter<"Main"> | string | null
     patient?: XOR<PatientScalarRelationFilter, PatientWhereInput>
     doctor?: XOR<DoctorScalarRelationFilter, DoctorWhereInput>
     clinic?: XOR<ClinicScalarRelationFilter, ClinicWhereInput>
@@ -5728,10 +6825,10 @@ export namespace Prisma {
     PatientID?: SortOrder
     DoctorID?: SortOrder
     ClinicID?: SortOrder
-    Conversation?: SortOrder
-    DigiPrescription?: SortOrder
-    DietPlan?: SortOrder
-    ExercisePlan?: SortOrder
+    Conversation?: SortOrderInput | SortOrder
+    DigiPrescription?: SortOrderInput | SortOrder
+    DietPlan?: SortOrderInput | SortOrder
+    ExercisePlan?: SortOrderInput | SortOrder
     patient?: PatientOrderByWithRelationInput
     doctor?: DoctorOrderByWithRelationInput
     clinic?: ClinicOrderByWithRelationInput
@@ -5745,10 +6842,10 @@ export namespace Prisma {
     PatientID?: IntFilter<"Main"> | number
     DoctorID?: IntFilter<"Main"> | number
     ClinicID?: IntFilter<"Main"> | number
-    Conversation?: StringFilter<"Main"> | string
-    DigiPrescription?: StringFilter<"Main"> | string
-    DietPlan?: StringFilter<"Main"> | string
-    ExercisePlan?: StringFilter<"Main"> | string
+    Conversation?: StringNullableFilter<"Main"> | string | null
+    DigiPrescription?: StringNullableFilter<"Main"> | string | null
+    DietPlan?: StringNullableFilter<"Main"> | string | null
+    ExercisePlan?: StringNullableFilter<"Main"> | string | null
     patient?: XOR<PatientScalarRelationFilter, PatientWhereInput>
     doctor?: XOR<DoctorScalarRelationFilter, DoctorWhereInput>
     clinic?: XOR<ClinicScalarRelationFilter, ClinicWhereInput>
@@ -5759,10 +6856,10 @@ export namespace Prisma {
     PatientID?: SortOrder
     DoctorID?: SortOrder
     ClinicID?: SortOrder
-    Conversation?: SortOrder
-    DigiPrescription?: SortOrder
-    DietPlan?: SortOrder
-    ExercisePlan?: SortOrder
+    Conversation?: SortOrderInput | SortOrder
+    DigiPrescription?: SortOrderInput | SortOrder
+    DietPlan?: SortOrderInput | SortOrder
+    ExercisePlan?: SortOrderInput | SortOrder
     _count?: MainCountOrderByAggregateInput
     _avg?: MainAvgOrderByAggregateInput
     _max?: MainMaxOrderByAggregateInput
@@ -5778,10 +6875,10 @@ export namespace Prisma {
     PatientID?: IntWithAggregatesFilter<"Main"> | number
     DoctorID?: IntWithAggregatesFilter<"Main"> | number
     ClinicID?: IntWithAggregatesFilter<"Main"> | number
-    Conversation?: StringWithAggregatesFilter<"Main"> | string
-    DigiPrescription?: StringWithAggregatesFilter<"Main"> | string
-    DietPlan?: StringWithAggregatesFilter<"Main"> | string
-    ExercisePlan?: StringWithAggregatesFilter<"Main"> | string
+    Conversation?: StringNullableWithAggregatesFilter<"Main"> | string | null
+    DigiPrescription?: StringNullableWithAggregatesFilter<"Main"> | string | null
+    DietPlan?: StringNullableWithAggregatesFilter<"Main"> | string | null
+    ExercisePlan?: StringNullableWithAggregatesFilter<"Main"> | string | null
   }
 
   export type PatientWhereInput = {
@@ -5910,11 +7007,50 @@ export namespace Prisma {
     Name?: StringWithAggregatesFilter<"Clinic"> | string
   }
 
+  export type TestWhereInput = {
+    AND?: TestWhereInput | TestWhereInput[]
+    OR?: TestWhereInput[]
+    NOT?: TestWhereInput | TestWhereInput[]
+    ClinicID?: IntFilter<"Test"> | number
+    Name?: StringFilter<"Test"> | string
+  }
+
+  export type TestOrderByWithRelationInput = {
+    ClinicID?: SortOrder
+    Name?: SortOrder
+  }
+
+  export type TestWhereUniqueInput = Prisma.AtLeast<{
+    ClinicID?: number
+    AND?: TestWhereInput | TestWhereInput[]
+    OR?: TestWhereInput[]
+    NOT?: TestWhereInput | TestWhereInput[]
+    Name?: StringFilter<"Test"> | string
+  }, "ClinicID">
+
+  export type TestOrderByWithAggregationInput = {
+    ClinicID?: SortOrder
+    Name?: SortOrder
+    _count?: TestCountOrderByAggregateInput
+    _avg?: TestAvgOrderByAggregateInput
+    _max?: TestMaxOrderByAggregateInput
+    _min?: TestMinOrderByAggregateInput
+    _sum?: TestSumOrderByAggregateInput
+  }
+
+  export type TestScalarWhereWithAggregatesInput = {
+    AND?: TestScalarWhereWithAggregatesInput | TestScalarWhereWithAggregatesInput[]
+    OR?: TestScalarWhereWithAggregatesInput[]
+    NOT?: TestScalarWhereWithAggregatesInput | TestScalarWhereWithAggregatesInput[]
+    ClinicID?: IntWithAggregatesFilter<"Test"> | number
+    Name?: StringWithAggregatesFilter<"Test"> | string
+  }
+
   export type MainCreateInput = {
-    Conversation: string
-    DigiPrescription: string
-    DietPlan: string
-    ExercisePlan: string
+    Conversation?: string | null
+    DigiPrescription?: string | null
+    DietPlan?: string | null
+    ExercisePlan?: string | null
     patient: PatientCreateNestedOneWithoutMainsInput
     doctor: DoctorCreateNestedOneWithoutMainsInput
     clinic: ClinicCreateNestedOneWithoutMainsInput
@@ -5925,17 +7061,17 @@ export namespace Prisma {
     PatientID: number
     DoctorID: number
     ClinicID: number
-    Conversation: string
-    DigiPrescription: string
-    DietPlan: string
-    ExercisePlan: string
+    Conversation?: string | null
+    DigiPrescription?: string | null
+    DietPlan?: string | null
+    ExercisePlan?: string | null
   }
 
   export type MainUpdateInput = {
-    Conversation?: StringFieldUpdateOperationsInput | string
-    DigiPrescription?: StringFieldUpdateOperationsInput | string
-    DietPlan?: StringFieldUpdateOperationsInput | string
-    ExercisePlan?: StringFieldUpdateOperationsInput | string
+    Conversation?: NullableStringFieldUpdateOperationsInput | string | null
+    DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
     patient?: PatientUpdateOneRequiredWithoutMainsNestedInput
     doctor?: DoctorUpdateOneRequiredWithoutMainsNestedInput
     clinic?: ClinicUpdateOneRequiredWithoutMainsNestedInput
@@ -5946,10 +7082,10 @@ export namespace Prisma {
     PatientID?: IntFieldUpdateOperationsInput | number
     DoctorID?: IntFieldUpdateOperationsInput | number
     ClinicID?: IntFieldUpdateOperationsInput | number
-    Conversation?: StringFieldUpdateOperationsInput | string
-    DigiPrescription?: StringFieldUpdateOperationsInput | string
-    DietPlan?: StringFieldUpdateOperationsInput | string
-    ExercisePlan?: StringFieldUpdateOperationsInput | string
+    Conversation?: NullableStringFieldUpdateOperationsInput | string | null
+    DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MainCreateManyInput = {
@@ -5957,17 +7093,17 @@ export namespace Prisma {
     PatientID: number
     DoctorID: number
     ClinicID: number
-    Conversation: string
-    DigiPrescription: string
-    DietPlan: string
-    ExercisePlan: string
+    Conversation?: string | null
+    DigiPrescription?: string | null
+    DietPlan?: string | null
+    ExercisePlan?: string | null
   }
 
   export type MainUpdateManyMutationInput = {
-    Conversation?: StringFieldUpdateOperationsInput | string
-    DigiPrescription?: StringFieldUpdateOperationsInput | string
-    DietPlan?: StringFieldUpdateOperationsInput | string
-    ExercisePlan?: StringFieldUpdateOperationsInput | string
+    Conversation?: NullableStringFieldUpdateOperationsInput | string | null
+    DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MainUncheckedUpdateManyInput = {
@@ -5975,10 +7111,10 @@ export namespace Prisma {
     PatientID?: IntFieldUpdateOperationsInput | number
     DoctorID?: IntFieldUpdateOperationsInput | number
     ClinicID?: IntFieldUpdateOperationsInput | number
-    Conversation?: StringFieldUpdateOperationsInput | string
-    DigiPrescription?: StringFieldUpdateOperationsInput | string
-    DietPlan?: StringFieldUpdateOperationsInput | string
-    ExercisePlan?: StringFieldUpdateOperationsInput | string
+    Conversation?: NullableStringFieldUpdateOperationsInput | string | null
+    DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PatientCreateInput = {
@@ -6089,6 +7225,38 @@ export namespace Prisma {
     Name?: StringFieldUpdateOperationsInput | string
   }
 
+  export type TestCreateInput = {
+    Name: string
+  }
+
+  export type TestUncheckedCreateInput = {
+    ClinicID?: number
+    Name: string
+  }
+
+  export type TestUpdateInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TestUncheckedUpdateInput = {
+    ClinicID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TestCreateManyInput = {
+    ClinicID?: number
+    Name: string
+  }
+
+  export type TestUpdateManyMutationInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TestUncheckedUpdateManyInput = {
+    ClinicID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -6100,10 +7268,10 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type StringFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -6112,7 +7280,7 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
-    not?: NestedStringFilter<$PrismaModel> | string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type PatientScalarRelationFilter = {
@@ -6128,6 +7296,11 @@ export namespace Prisma {
   export type ClinicScalarRelationFilter = {
     is?: ClinicWhereInput
     isNot?: ClinicWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type MainCountOrderByAggregateInput = {
@@ -6193,7 +7366,25 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
     notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -6205,10 +7396,7 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
+    not?: NestedStringFilter<$PrismaModel> | string
   }
 
   export type MainListRelationFilter = {
@@ -6242,6 +7430,24 @@ export namespace Prisma {
 
   export type PatientSumOrderByAggregateInput = {
     PatientID?: SortOrder
+  }
+
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type DoctorCountOrderByAggregateInput = {
@@ -6290,6 +7496,29 @@ export namespace Prisma {
     ClinicID?: SortOrder
   }
 
+  export type TestCountOrderByAggregateInput = {
+    ClinicID?: SortOrder
+    Name?: SortOrder
+  }
+
+  export type TestAvgOrderByAggregateInput = {
+    ClinicID?: SortOrder
+  }
+
+  export type TestMaxOrderByAggregateInput = {
+    ClinicID?: SortOrder
+    Name?: SortOrder
+  }
+
+  export type TestMinOrderByAggregateInput = {
+    ClinicID?: SortOrder
+    Name?: SortOrder
+  }
+
+  export type TestSumOrderByAggregateInput = {
+    ClinicID?: SortOrder
+  }
+
   export type PatientCreateNestedOneWithoutMainsInput = {
     create?: XOR<PatientCreateWithoutMainsInput, PatientUncheckedCreateWithoutMainsInput>
     connectOrCreate?: PatientCreateOrConnectWithoutMainsInput
@@ -6308,8 +7537,8 @@ export namespace Prisma {
     connect?: ClinicWhereUniqueInput
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type PatientUpdateOneRequiredWithoutMainsNestedInput = {
@@ -6356,6 +7585,10 @@ export namespace Prisma {
     connectOrCreate?: MainCreateOrConnectWithoutPatientInput | MainCreateOrConnectWithoutPatientInput[]
     createMany?: MainCreateManyPatientInputEnvelope
     connect?: MainWhereUniqueInput | MainWhereUniqueInput[]
+  }
+
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
   }
 
   export type MainUpdateManyWithoutPatientNestedInput = {
@@ -6481,10 +7714,10 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type NestedStringFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -6492,7 +7725,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringFilter<$PrismaModel> | string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -6520,6 +7753,48 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedStringFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringFilter<$PrismaModel> | string
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -6642,10 +7917,10 @@ export namespace Prisma {
   }
 
   export type MainCreateWithoutPatientInput = {
-    Conversation: string
-    DigiPrescription: string
-    DietPlan: string
-    ExercisePlan: string
+    Conversation?: string | null
+    DigiPrescription?: string | null
+    DietPlan?: string | null
+    ExercisePlan?: string | null
     doctor: DoctorCreateNestedOneWithoutMainsInput
     clinic: ClinicCreateNestedOneWithoutMainsInput
   }
@@ -6654,10 +7929,10 @@ export namespace Prisma {
     VisitID?: number
     DoctorID: number
     ClinicID: number
-    Conversation: string
-    DigiPrescription: string
-    DietPlan: string
-    ExercisePlan: string
+    Conversation?: string | null
+    DigiPrescription?: string | null
+    DietPlan?: string | null
+    ExercisePlan?: string | null
   }
 
   export type MainCreateOrConnectWithoutPatientInput = {
@@ -6694,17 +7969,17 @@ export namespace Prisma {
     PatientID?: IntFilter<"Main"> | number
     DoctorID?: IntFilter<"Main"> | number
     ClinicID?: IntFilter<"Main"> | number
-    Conversation?: StringFilter<"Main"> | string
-    DigiPrescription?: StringFilter<"Main"> | string
-    DietPlan?: StringFilter<"Main"> | string
-    ExercisePlan?: StringFilter<"Main"> | string
+    Conversation?: StringNullableFilter<"Main"> | string | null
+    DigiPrescription?: StringNullableFilter<"Main"> | string | null
+    DietPlan?: StringNullableFilter<"Main"> | string | null
+    ExercisePlan?: StringNullableFilter<"Main"> | string | null
   }
 
   export type MainCreateWithoutDoctorInput = {
-    Conversation: string
-    DigiPrescription: string
-    DietPlan: string
-    ExercisePlan: string
+    Conversation?: string | null
+    DigiPrescription?: string | null
+    DietPlan?: string | null
+    ExercisePlan?: string | null
     patient: PatientCreateNestedOneWithoutMainsInput
     clinic: ClinicCreateNestedOneWithoutMainsInput
   }
@@ -6713,10 +7988,10 @@ export namespace Prisma {
     VisitID?: number
     PatientID: number
     ClinicID: number
-    Conversation: string
-    DigiPrescription: string
-    DietPlan: string
-    ExercisePlan: string
+    Conversation?: string | null
+    DigiPrescription?: string | null
+    DietPlan?: string | null
+    ExercisePlan?: string | null
   }
 
   export type MainCreateOrConnectWithoutDoctorInput = {
@@ -6746,10 +8021,10 @@ export namespace Prisma {
   }
 
   export type MainCreateWithoutClinicInput = {
-    Conversation: string
-    DigiPrescription: string
-    DietPlan: string
-    ExercisePlan: string
+    Conversation?: string | null
+    DigiPrescription?: string | null
+    DietPlan?: string | null
+    ExercisePlan?: string | null
     patient: PatientCreateNestedOneWithoutMainsInput
     doctor: DoctorCreateNestedOneWithoutMainsInput
   }
@@ -6758,10 +8033,10 @@ export namespace Prisma {
     VisitID?: number
     PatientID: number
     DoctorID: number
-    Conversation: string
-    DigiPrescription: string
-    DietPlan: string
-    ExercisePlan: string
+    Conversation?: string | null
+    DigiPrescription?: string | null
+    DietPlan?: string | null
+    ExercisePlan?: string | null
   }
 
   export type MainCreateOrConnectWithoutClinicInput = {
@@ -6794,17 +8069,17 @@ export namespace Prisma {
     VisitID?: number
     DoctorID: number
     ClinicID: number
-    Conversation: string
-    DigiPrescription: string
-    DietPlan: string
-    ExercisePlan: string
+    Conversation?: string | null
+    DigiPrescription?: string | null
+    DietPlan?: string | null
+    ExercisePlan?: string | null
   }
 
   export type MainUpdateWithoutPatientInput = {
-    Conversation?: StringFieldUpdateOperationsInput | string
-    DigiPrescription?: StringFieldUpdateOperationsInput | string
-    DietPlan?: StringFieldUpdateOperationsInput | string
-    ExercisePlan?: StringFieldUpdateOperationsInput | string
+    Conversation?: NullableStringFieldUpdateOperationsInput | string | null
+    DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
     doctor?: DoctorUpdateOneRequiredWithoutMainsNestedInput
     clinic?: ClinicUpdateOneRequiredWithoutMainsNestedInput
   }
@@ -6813,37 +8088,37 @@ export namespace Prisma {
     VisitID?: IntFieldUpdateOperationsInput | number
     DoctorID?: IntFieldUpdateOperationsInput | number
     ClinicID?: IntFieldUpdateOperationsInput | number
-    Conversation?: StringFieldUpdateOperationsInput | string
-    DigiPrescription?: StringFieldUpdateOperationsInput | string
-    DietPlan?: StringFieldUpdateOperationsInput | string
-    ExercisePlan?: StringFieldUpdateOperationsInput | string
+    Conversation?: NullableStringFieldUpdateOperationsInput | string | null
+    DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MainUncheckedUpdateManyWithoutPatientInput = {
     VisitID?: IntFieldUpdateOperationsInput | number
     DoctorID?: IntFieldUpdateOperationsInput | number
     ClinicID?: IntFieldUpdateOperationsInput | number
-    Conversation?: StringFieldUpdateOperationsInput | string
-    DigiPrescription?: StringFieldUpdateOperationsInput | string
-    DietPlan?: StringFieldUpdateOperationsInput | string
-    ExercisePlan?: StringFieldUpdateOperationsInput | string
+    Conversation?: NullableStringFieldUpdateOperationsInput | string | null
+    DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MainCreateManyDoctorInput = {
     VisitID?: number
     PatientID: number
     ClinicID: number
-    Conversation: string
-    DigiPrescription: string
-    DietPlan: string
-    ExercisePlan: string
+    Conversation?: string | null
+    DigiPrescription?: string | null
+    DietPlan?: string | null
+    ExercisePlan?: string | null
   }
 
   export type MainUpdateWithoutDoctorInput = {
-    Conversation?: StringFieldUpdateOperationsInput | string
-    DigiPrescription?: StringFieldUpdateOperationsInput | string
-    DietPlan?: StringFieldUpdateOperationsInput | string
-    ExercisePlan?: StringFieldUpdateOperationsInput | string
+    Conversation?: NullableStringFieldUpdateOperationsInput | string | null
+    DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
     patient?: PatientUpdateOneRequiredWithoutMainsNestedInput
     clinic?: ClinicUpdateOneRequiredWithoutMainsNestedInput
   }
@@ -6852,37 +8127,37 @@ export namespace Prisma {
     VisitID?: IntFieldUpdateOperationsInput | number
     PatientID?: IntFieldUpdateOperationsInput | number
     ClinicID?: IntFieldUpdateOperationsInput | number
-    Conversation?: StringFieldUpdateOperationsInput | string
-    DigiPrescription?: StringFieldUpdateOperationsInput | string
-    DietPlan?: StringFieldUpdateOperationsInput | string
-    ExercisePlan?: StringFieldUpdateOperationsInput | string
+    Conversation?: NullableStringFieldUpdateOperationsInput | string | null
+    DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MainUncheckedUpdateManyWithoutDoctorInput = {
     VisitID?: IntFieldUpdateOperationsInput | number
     PatientID?: IntFieldUpdateOperationsInput | number
     ClinicID?: IntFieldUpdateOperationsInput | number
-    Conversation?: StringFieldUpdateOperationsInput | string
-    DigiPrescription?: StringFieldUpdateOperationsInput | string
-    DietPlan?: StringFieldUpdateOperationsInput | string
-    ExercisePlan?: StringFieldUpdateOperationsInput | string
+    Conversation?: NullableStringFieldUpdateOperationsInput | string | null
+    DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MainCreateManyClinicInput = {
     VisitID?: number
     PatientID: number
     DoctorID: number
-    Conversation: string
-    DigiPrescription: string
-    DietPlan: string
-    ExercisePlan: string
+    Conversation?: string | null
+    DigiPrescription?: string | null
+    DietPlan?: string | null
+    ExercisePlan?: string | null
   }
 
   export type MainUpdateWithoutClinicInput = {
-    Conversation?: StringFieldUpdateOperationsInput | string
-    DigiPrescription?: StringFieldUpdateOperationsInput | string
-    DietPlan?: StringFieldUpdateOperationsInput | string
-    ExercisePlan?: StringFieldUpdateOperationsInput | string
+    Conversation?: NullableStringFieldUpdateOperationsInput | string | null
+    DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
     patient?: PatientUpdateOneRequiredWithoutMainsNestedInput
     doctor?: DoctorUpdateOneRequiredWithoutMainsNestedInput
   }
@@ -6891,20 +8166,20 @@ export namespace Prisma {
     VisitID?: IntFieldUpdateOperationsInput | number
     PatientID?: IntFieldUpdateOperationsInput | number
     DoctorID?: IntFieldUpdateOperationsInput | number
-    Conversation?: StringFieldUpdateOperationsInput | string
-    DigiPrescription?: StringFieldUpdateOperationsInput | string
-    DietPlan?: StringFieldUpdateOperationsInput | string
-    ExercisePlan?: StringFieldUpdateOperationsInput | string
+    Conversation?: NullableStringFieldUpdateOperationsInput | string | null
+    DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MainUncheckedUpdateManyWithoutClinicInput = {
     VisitID?: IntFieldUpdateOperationsInput | number
     PatientID?: IntFieldUpdateOperationsInput | number
     DoctorID?: IntFieldUpdateOperationsInput | number
-    Conversation?: StringFieldUpdateOperationsInput | string
-    DigiPrescription?: StringFieldUpdateOperationsInput | string
-    DietPlan?: StringFieldUpdateOperationsInput | string
-    ExercisePlan?: StringFieldUpdateOperationsInput | string
+    Conversation?: NullableStringFieldUpdateOperationsInput | string | null
+    DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

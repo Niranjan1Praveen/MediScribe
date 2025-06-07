@@ -1,79 +1,76 @@
 import os
-from flask import Flask, jsonify
+from dotenv import load_dotenv
 from supabase import create_client
-import requests
+from google import genai
+from google.genai import types
 
-app = Flask(__name__)
+# ─── Load environment variables ────────────────────────────────────────────────
+load_dotenv()  # this will read .env in the current directory
 
-# Load environment variables
-SUPABASE_URL = os.getenv('SUPABASE_URL')
-SUPABASE_KEY = os.getenv('SUPABASE_KEY')
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')  # Set this to your Gemini API key
+SUPABASE_URL   = os.getenv("SUPABASE_URL")
+SUPABASE_KEY   = os.getenv("SUPABASE_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-# Initialize Supabase client\ssupabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+if not (SUPABASE_URL and SUPABASE_KEY and GEMINI_API_KEY):
+    missing = [k for k in ("SUPABASE_URL", "SUPABASE_KEY", "GEMINI_API_KEY") if not os.getenv(k)]
+    raise EnvironmentError(f"Missing environment variables: {', '.join(missing)}")
 
-# Gemini REST endpoint (using text-bison-001 model)
-GEMINI_ENDPOINT = (
-    f"https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key={GEMINI_API_KEY}"
-)
+# ─── Initialize clients ────────────────────────────────────────────────────────
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+genai_client = genai.Client(api_key=GEMINI_API_KEY)
 
-@app.route('/generate_prescription/<int:visit_id>', methods=['POST'])
-def generate_prescription(visit_id):
+# ─── Helper: call Gemini to draft prescription ─────────────────────────────────
+def generate_prescription_text(conversation: str) -> str:
     """
-    Fetches the Conversation for a given VisitID, sends it to Gemini to draft
-    a prescription in key pointers, and stores the result in DigiPrescription.
+    Uses Google Gemini (gemini-2.0-flash) to draft a prescription in bullet-point form
+    from the given conversation string.
     """
-    # Retrieve the Main record
-    resp = (
-        supabase
-        .table('Main')
-        .select('VisitID, Conversation')
-        .eq('VisitID', visit_id)
-        .single()
-        .execute()
+    response = genai_client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=[conversation],
+        config=types.GenerateContentConfig(
+            system_instruction=(
+                "You are an expert scribe. Review the dialogue and extract the key points, organizing them into clear, logical sections. "
+                "Use concise bullet points under headings such as ‘Summary’, ‘Key Issues’, ‘Background’, ‘Decisions’, and ‘Action Items’. "
+                "If any details are missing, infer reasonable phrasing to ensure each section is clear and complete."
+            ),
+            max_output_tokens=500,
+            temperature=0.2
+        )
     )
-    record = resp.data
-    if not record:
-        return jsonify({'error': 'Record not found'}), 404
+    return response.text.strip()
 
-    conversation_text = record.get('Conversation')
-    prompt_text = f"From the conversation draft a Prescription in pointers:\n{conversation_text}"
+# ─── Batch‐update all pending records ───────────────────────────────────────────
+def update_all():
+    # Fetch VisitID, Conversation, and existing DigiPrescription
+    rows = supabase.table("Main") \
+        .select("VisitID, Conversation, DigiPrescription") \
+        .execute().data
 
-    # Call Gemini API
-    payload = {
-        'prompt': {'text': prompt_text},
-        'temperature': 0.2,
-        'maxOutputTokens': 256
-    }
-    api_resp = requests.post(GEMINI_ENDPOINT, json=payload)
-    if api_resp.status_code != 200:
-        return jsonify({'error': 'Gemini API error', 'details': api_resp.text}), 500
+    # Only keep rows where DigiPrescription is null or empty
+    pending = [r for r in rows if not r.get("DigiPrescription")]
 
-    gemini_data = api_resp.json()
-    # Extract the generated prescription
-    prescription = gemini_data['candidates'][0]['output']
+    if not pending:
+        print("Found 0 records to process.")
+        return
 
-    # Update the Main record with the prescription
-    update_resp = (
-        supabase
-        .table('Main')
-        .update({'DigiPrescription': prescription})
-        .eq('VisitID', visit_id)
-        .execute()
-    )
-    if update_resp.error:
-        return jsonify({'error': 'Failed to update record', 'details': update_resp.error}), 500
+    for row in pending:
+        vid  = row["VisitID"]
+        conv = row["Conversation"]
+        try:
+            # Generate prescription text via Gemini API
+            prescription = generate_prescription_text(conv)
 
-    return jsonify({
-        'VisitID': visit_id,
-        'DigiPrescription': prescription
-    }), 200
+            # Write back to Supabase
+            supabase.table("Main") \
+                .update({"DigiPrescription": prescription}) \
+                .eq("VisitID", vid) \
+                .execute()
 
-if __name__ == '__main__':
-    # Ensure environment vars are set
-    required = ['SUPABASE_URL', 'SUPABASE_KEY', 'GEMINI_API_KEY']
-    missing = [var for var in required if not os.getenv(var)]
-    if missing:
-        raise EnvironmentError(f"Missing environment variables: {', '.join(missing)}")
+            print(f"[✔] VisitID {vid} updated.")
+        except Exception as e:
+            print(f"[✖] VisitID {vid} failed: {e}")
 
-    app.run(host='0.0.0.0', port=5000, debug=True)
+# ─── Entrypoint ────────────────────────────────────────────────────────────────
+if __name__ == "__main__":
+    update_all()

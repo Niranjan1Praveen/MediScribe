@@ -146,6 +146,11 @@ exports.Prisma.ClinicScalarFieldEnum = {
   Name: 'Name'
 };
 
+exports.Prisma.TestScalarFieldEnum = {
+  ClinicID: 'ClinicID',
+  Name: 'Name'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -156,12 +161,18 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
   Main: 'Main',
   Patient: 'Patient',
   Doctor: 'Doctor',
-  Clinic: 'Clinic'
+  Clinic: 'Clinic',
+  Test: 'Test'
 };
 
 /**

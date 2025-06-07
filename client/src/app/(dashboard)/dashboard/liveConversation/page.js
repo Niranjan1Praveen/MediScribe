@@ -1,7 +1,7 @@
-import AppLiveConversation from "@/components/dashboard/AppLiveConversation";
-import React from "react";
+import AppLiveConversation from '@/components/dashboard/AppLiveConversation';
+import React from 'react';
 
-function page(props) {
+function Page(props) {
   return (
     <div>
       <AppLiveConversation/>
@@ -9,4 +9,4 @@ function page(props) {
   );
 }
 
-export default page;
+export default Page;

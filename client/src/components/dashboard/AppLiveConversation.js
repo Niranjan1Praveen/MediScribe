@@ -51,13 +51,62 @@ export default function AppLiveConversation() {
     if (recognitionRef.current) {
       recognitionRef.current.lang = language;
       recognitionRef.current.start();
+    } else {
+      console.error("Speech recognition not available");
+      alert("Speech recognition is not supported in this browser.");
     }
   };
 
-  const handleStopRecording = () => {
+  const handleStopRecording = async () => {
     setRecording(false);
     setEndTime(Date.now());
-    recognitionRef.current?.stop();
+    if (!recognitionRef.current) {
+      console.error("No recognition instance available");
+      alert("Speech recognition is not available.");
+      return;
+    }
+    recognitionRef.current.stop();
+
+    setTimeout(async () => {
+      const trimmedTranscript = transcript.trim();
+      if (!trimmedTranscript) {
+        console.error("No transcript available to send.");
+        alert("No speech was detected. Please try again.");
+        return;
+      }
+
+      try {
+        console.log("Sending transcript:", trimmedTranscript);
+        const res = await fetch("/api/voice-response", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            transcript: trimmedTranscript,
+            patientId: 12,
+            doctorId: 12,
+            clinicId: 1,
+          }),
+        });
+
+        const result = await res.json();
+        console.log("Server response:", result);
+        if (!res.ok) {
+          const errorMsg = result.error || "Failed to save transcript";
+          const errorDetails = result.details || result.code || "";
+          throw new Error(
+            `${errorMsg}${errorDetails ? `: ${errorDetails}` : ""}`
+          );
+        }
+        console.log("Inserted transcript:", result);
+      } catch (error) {
+        console.error("Error posting transcript:", error.message, error);
+        alert(
+          `Error saving transcript: ${error.message}. Check console for details.`
+        );
+      }
+    }, 1000);
   };
 
   const getDuration = () => {
@@ -78,15 +127,17 @@ export default function AppLiveConversation() {
           <p className="text-sm text-muted-foreground mb-2">
             Doctor & Patient Dialogue
           </p>
-          <div className="flex items-center justify-between gap-10 my-4">
+
+          <div className="flex items-center justify-between gap-5 my-4">
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="rounded-md p-2"
+              className="rounded p-2"
             >
               <option value="en-US" className="text-black">English</option>
               <option value="hi-IN" className="text-black">Hindi</option>
             </select>
+
             <Button
               className="bg-cyan-500 hover:bg-cyan-600"
               onClick={recording ? handleStopRecording : handleStartRecording}
@@ -148,7 +199,7 @@ export default function AppLiveConversation() {
           {!recording && transcript && (
             <div className="mt-4 space-y-2 text-center">
               <p className="text-sm text-muted-foreground">Transcript:</p>
-              <div className="text-sm p-2  rounded-md whitespace-pre-wrap w-full max-w-md">
+              <div className="text-sm p-2 rounded-md whitespace-pre-wrap w-full max-w-md">
                 {transcript}
               </div>
             </div>

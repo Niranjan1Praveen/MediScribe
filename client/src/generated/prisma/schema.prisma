@@ -47,3 +47,8 @@ model Clinic {
   // Back relation to Main
   mains Main[]
 }
+
+model Test {
+  ClinicID Int    @id @default(autoincrement())
+  Name     String
+}
