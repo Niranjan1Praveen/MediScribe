@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^5.0.1",
     "@kinde-oss/kinde-auth-nextjs": "^2.6.2",
     "@prisma/client": "^6.9.0",

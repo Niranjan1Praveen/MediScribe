@@ -127,6 +127,7 @@ exports.Prisma.MainScalarFieldEnum = {
   ClinicID: 'ClinicID',
   Conversation: 'Conversation',
   DigiPrescription: 'DigiPrescription',
+  Preference: 'Preference',
   DietPlan: 'DietPlan',
   ExercisePlan: 'ExercisePlan'
 };

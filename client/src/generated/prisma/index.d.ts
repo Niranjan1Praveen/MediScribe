@@ -1358,6 +1358,7 @@ export namespace Prisma {
     ClinicID: number | null
     Conversation: string | null
     DigiPrescription: string | null
+    Preference: string | null
     DietPlan: string | null
     ExercisePlan: string | null
   }
@@ -1369,6 +1370,7 @@ export namespace Prisma {
     ClinicID: number | null
     Conversation: string | null
     DigiPrescription: string | null
+    Preference: string | null
     DietPlan: string | null
     ExercisePlan: string | null
   }
@@ -1380,6 +1382,7 @@ export namespace Prisma {
     ClinicID: number
     Conversation: number
     DigiPrescription: number
+    Preference: number
     DietPlan: number
     ExercisePlan: number
     _all: number
@@ -1407,6 +1410,7 @@ export namespace Prisma {
     ClinicID?: true
     Conversation?: true
     DigiPrescription?: true
+    Preference?: true
     DietPlan?: true
     ExercisePlan?: true
   }
@@ -1418,6 +1422,7 @@ export namespace Prisma {
     ClinicID?: true
     Conversation?: true
     DigiPrescription?: true
+    Preference?: true
     DietPlan?: true
     ExercisePlan?: true
   }
@@ -1429,6 +1434,7 @@ export namespace Prisma {
     ClinicID?: true
     Conversation?: true
     DigiPrescription?: true
+    Preference?: true
     DietPlan?: true
     ExercisePlan?: true
     _all?: true
@@ -1527,6 +1533,7 @@ export namespace Prisma {
     ClinicID: number
     Conversation: string | null
     DigiPrescription: string | null
+    Preference: string | null
     DietPlan: string | null
     ExercisePlan: string | null
     _count: MainCountAggregateOutputType | null
@@ -1557,6 +1564,7 @@ export namespace Prisma {
     ClinicID?: boolean
     Conversation?: boolean
     DigiPrescription?: boolean
+    Preference?: boolean
     DietPlan?: boolean
     ExercisePlan?: boolean
     patient?: boolean | PatientDefaultArgs<ExtArgs>
@@ -1571,6 +1579,7 @@ export namespace Prisma {
     ClinicID?: boolean
     Conversation?: boolean
     DigiPrescription?: boolean
+    Preference?: boolean
     DietPlan?: boolean
     ExercisePlan?: boolean
     patient?: boolean | PatientDefaultArgs<ExtArgs>
@@ -1585,6 +1594,7 @@ export namespace Prisma {
     ClinicID?: boolean
     Conversation?: boolean
     DigiPrescription?: boolean
+    Preference?: boolean
     DietPlan?: boolean
     ExercisePlan?: boolean
     patient?: boolean | PatientDefaultArgs<ExtArgs>
@@ -1599,11 +1609,12 @@ export namespace Prisma {
     ClinicID?: boolean
     Conversation?: boolean
     DigiPrescription?: boolean
+    Preference?: boolean
     DietPlan?: boolean
     ExercisePlan?: boolean
   }
 
-  export type MainOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"VisitID" | "PatientID" | "DoctorID" | "ClinicID" | "Conversation" | "DigiPrescription" | "DietPlan" | "ExercisePlan", ExtArgs["result"]["main"]>
+  export type MainOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"VisitID" | "PatientID" | "DoctorID" | "ClinicID" | "Conversation" | "DigiPrescription" | "Preference" | "DietPlan" | "ExercisePlan", ExtArgs["result"]["main"]>
   export type MainInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     patient?: boolean | PatientDefaultArgs<ExtArgs>
     doctor?: boolean | DoctorDefaultArgs<ExtArgs>
@@ -1634,6 +1645,7 @@ export namespace Prisma {
       ClinicID: number
       Conversation: string | null
       DigiPrescription: string | null
+      Preference: string | null
       DietPlan: string | null
       ExercisePlan: string | null
     }, ExtArgs["result"]["main"]>
@@ -2068,6 +2080,7 @@ export namespace Prisma {
     readonly ClinicID: FieldRef<"Main", 'Int'>
     readonly Conversation: FieldRef<"Main", 'String'>
     readonly DigiPrescription: FieldRef<"Main", 'String'>
+    readonly Preference: FieldRef<"Main", 'String'>
     readonly DietPlan: FieldRef<"Main", 'String'>
     readonly ExercisePlan: FieldRef<"Main", 'String'>
   }
@@ -6690,6 +6703,7 @@ export namespace Prisma {
     ClinicID: 'ClinicID',
     Conversation: 'Conversation',
     DigiPrescription: 'DigiPrescription',
+    Preference: 'Preference',
     DietPlan: 'DietPlan',
     ExercisePlan: 'ExercisePlan'
   };
@@ -6813,6 +6827,7 @@ export namespace Prisma {
     ClinicID?: IntFilter<"Main"> | number
     Conversation?: StringNullableFilter<"Main"> | string | null
     DigiPrescription?: StringNullableFilter<"Main"> | string | null
+    Preference?: StringNullableFilter<"Main"> | string | null
     DietPlan?: StringNullableFilter<"Main"> | string | null
     ExercisePlan?: StringNullableFilter<"Main"> | string | null
     patient?: XOR<PatientScalarRelationFilter, PatientWhereInput>
@@ -6827,6 +6842,7 @@ export namespace Prisma {
     ClinicID?: SortOrder
     Conversation?: SortOrderInput | SortOrder
     DigiPrescription?: SortOrderInput | SortOrder
+    Preference?: SortOrderInput | SortOrder
     DietPlan?: SortOrderInput | SortOrder
     ExercisePlan?: SortOrderInput | SortOrder
     patient?: PatientOrderByWithRelationInput
@@ -6844,6 +6860,7 @@ export namespace Prisma {
     ClinicID?: IntFilter<"Main"> | number
     Conversation?: StringNullableFilter<"Main"> | string | null
     DigiPrescription?: StringNullableFilter<"Main"> | string | null
+    Preference?: StringNullableFilter<"Main"> | string | null
     DietPlan?: StringNullableFilter<"Main"> | string | null
     ExercisePlan?: StringNullableFilter<"Main"> | string | null
     patient?: XOR<PatientScalarRelationFilter, PatientWhereInput>
@@ -6858,6 +6875,7 @@ export namespace Prisma {
     ClinicID?: SortOrder
     Conversation?: SortOrderInput | SortOrder
     DigiPrescription?: SortOrderInput | SortOrder
+    Preference?: SortOrderInput | SortOrder
     DietPlan?: SortOrderInput | SortOrder
     ExercisePlan?: SortOrderInput | SortOrder
     _count?: MainCountOrderByAggregateInput
@@ -6877,6 +6895,7 @@ export namespace Prisma {
     ClinicID?: IntWithAggregatesFilter<"Main"> | number
     Conversation?: StringNullableWithAggregatesFilter<"Main"> | string | null
     DigiPrescription?: StringNullableWithAggregatesFilter<"Main"> | string | null
+    Preference?: StringNullableWithAggregatesFilter<"Main"> | string | null
     DietPlan?: StringNullableWithAggregatesFilter<"Main"> | string | null
     ExercisePlan?: StringNullableWithAggregatesFilter<"Main"> | string | null
   }
@@ -7049,6 +7068,7 @@ export namespace Prisma {
   export type MainCreateInput = {
     Conversation?: string | null
     DigiPrescription?: string | null
+    Preference?: string | null
     DietPlan?: string | null
     ExercisePlan?: string | null
     patient: PatientCreateNestedOneWithoutMainsInput
@@ -7063,6 +7083,7 @@ export namespace Prisma {
     ClinicID: number
     Conversation?: string | null
     DigiPrescription?: string | null
+    Preference?: string | null
     DietPlan?: string | null
     ExercisePlan?: string | null
   }
@@ -7070,6 +7091,7 @@ export namespace Prisma {
   export type MainUpdateInput = {
     Conversation?: NullableStringFieldUpdateOperationsInput | string | null
     DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    Preference?: NullableStringFieldUpdateOperationsInput | string | null
     DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
     ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
     patient?: PatientUpdateOneRequiredWithoutMainsNestedInput
@@ -7084,6 +7106,7 @@ export namespace Prisma {
     ClinicID?: IntFieldUpdateOperationsInput | number
     Conversation?: NullableStringFieldUpdateOperationsInput | string | null
     DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    Preference?: NullableStringFieldUpdateOperationsInput | string | null
     DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
     ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -7095,6 +7118,7 @@ export namespace Prisma {
     ClinicID: number
     Conversation?: string | null
     DigiPrescription?: string | null
+    Preference?: string | null
     DietPlan?: string | null
     ExercisePlan?: string | null
   }
@@ -7102,6 +7126,7 @@ export namespace Prisma {
   export type MainUpdateManyMutationInput = {
     Conversation?: NullableStringFieldUpdateOperationsInput | string | null
     DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    Preference?: NullableStringFieldUpdateOperationsInput | string | null
     DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
     ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -7113,6 +7138,7 @@ export namespace Prisma {
     ClinicID?: IntFieldUpdateOperationsInput | number
     Conversation?: NullableStringFieldUpdateOperationsInput | string | null
     DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    Preference?: NullableStringFieldUpdateOperationsInput | string | null
     DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
     ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -7310,6 +7336,7 @@ export namespace Prisma {
     ClinicID?: SortOrder
     Conversation?: SortOrder
     DigiPrescription?: SortOrder
+    Preference?: SortOrder
     DietPlan?: SortOrder
     ExercisePlan?: SortOrder
   }
@@ -7328,6 +7355,7 @@ export namespace Prisma {
     ClinicID?: SortOrder
     Conversation?: SortOrder
     DigiPrescription?: SortOrder
+    Preference?: SortOrder
     DietPlan?: SortOrder
     ExercisePlan?: SortOrder
   }
@@ -7339,6 +7367,7 @@ export namespace Prisma {
     ClinicID?: SortOrder
     Conversation?: SortOrder
     DigiPrescription?: SortOrder
+    Preference?: SortOrder
     DietPlan?: SortOrder
     ExercisePlan?: SortOrder
   }
@@ -7919,6 +7948,7 @@ export namespace Prisma {
   export type MainCreateWithoutPatientInput = {
     Conversation?: string | null
     DigiPrescription?: string | null
+    Preference?: string | null
     DietPlan?: string | null
     ExercisePlan?: string | null
     doctor: DoctorCreateNestedOneWithoutMainsInput
@@ -7931,6 +7961,7 @@ export namespace Prisma {
     ClinicID: number
     Conversation?: string | null
     DigiPrescription?: string | null
+    Preference?: string | null
     DietPlan?: string | null
     ExercisePlan?: string | null
   }
@@ -7971,6 +8002,7 @@ export namespace Prisma {
     ClinicID?: IntFilter<"Main"> | number
     Conversation?: StringNullableFilter<"Main"> | string | null
     DigiPrescription?: StringNullableFilter<"Main"> | string | null
+    Preference?: StringNullableFilter<"Main"> | string | null
     DietPlan?: StringNullableFilter<"Main"> | string | null
     ExercisePlan?: StringNullableFilter<"Main"> | string | null
   }
@@ -7978,6 +8010,7 @@ export namespace Prisma {
   export type MainCreateWithoutDoctorInput = {
     Conversation?: string | null
     DigiPrescription?: string | null
+    Preference?: string | null
     DietPlan?: string | null
     ExercisePlan?: string | null
     patient: PatientCreateNestedOneWithoutMainsInput
@@ -7990,6 +8023,7 @@ export namespace Prisma {
     ClinicID: number
     Conversation?: string | null
     DigiPrescription?: string | null
+    Preference?: string | null
     DietPlan?: string | null
     ExercisePlan?: string | null
   }
@@ -8023,6 +8057,7 @@ export namespace Prisma {
   export type MainCreateWithoutClinicInput = {
     Conversation?: string | null
     DigiPrescription?: string | null
+    Preference?: string | null
     DietPlan?: string | null
     ExercisePlan?: string | null
     patient: PatientCreateNestedOneWithoutMainsInput
@@ -8035,6 +8070,7 @@ export namespace Prisma {
     DoctorID: number
     Conversation?: string | null
     DigiPrescription?: string | null
+    Preference?: string | null
     DietPlan?: string | null
     ExercisePlan?: string | null
   }
@@ -8071,6 +8107,7 @@ export namespace Prisma {
     ClinicID: number
     Conversation?: string | null
     DigiPrescription?: string | null
+    Preference?: string | null
     DietPlan?: string | null
     ExercisePlan?: string | null
   }
@@ -8078,6 +8115,7 @@ export namespace Prisma {
   export type MainUpdateWithoutPatientInput = {
     Conversation?: NullableStringFieldUpdateOperationsInput | string | null
     DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    Preference?: NullableStringFieldUpdateOperationsInput | string | null
     DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
     ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
     doctor?: DoctorUpdateOneRequiredWithoutMainsNestedInput
@@ -8090,6 +8128,7 @@ export namespace Prisma {
     ClinicID?: IntFieldUpdateOperationsInput | number
     Conversation?: NullableStringFieldUpdateOperationsInput | string | null
     DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    Preference?: NullableStringFieldUpdateOperationsInput | string | null
     DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
     ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -8100,6 +8139,7 @@ export namespace Prisma {
     ClinicID?: IntFieldUpdateOperationsInput | number
     Conversation?: NullableStringFieldUpdateOperationsInput | string | null
     DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    Preference?: NullableStringFieldUpdateOperationsInput | string | null
     DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
     ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -8110,6 +8150,7 @@ export namespace Prisma {
     ClinicID: number
     Conversation?: string | null
     DigiPrescription?: string | null
+    Preference?: string | null
     DietPlan?: string | null
     ExercisePlan?: string | null
   }
@@ -8117,6 +8158,7 @@ export namespace Prisma {
   export type MainUpdateWithoutDoctorInput = {
     Conversation?: NullableStringFieldUpdateOperationsInput | string | null
     DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    Preference?: NullableStringFieldUpdateOperationsInput | string | null
     DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
     ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
     patient?: PatientUpdateOneRequiredWithoutMainsNestedInput
@@ -8129,6 +8171,7 @@ export namespace Prisma {
     ClinicID?: IntFieldUpdateOperationsInput | number
     Conversation?: NullableStringFieldUpdateOperationsInput | string | null
     DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    Preference?: NullableStringFieldUpdateOperationsInput | string | null
     DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
     ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -8139,6 +8182,7 @@ export namespace Prisma {
     ClinicID?: IntFieldUpdateOperationsInput | number
     Conversation?: NullableStringFieldUpdateOperationsInput | string | null
     DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    Preference?: NullableStringFieldUpdateOperationsInput | string | null
     DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
     ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -8149,6 +8193,7 @@ export namespace Prisma {
     DoctorID: number
     Conversation?: string | null
     DigiPrescription?: string | null
+    Preference?: string | null
     DietPlan?: string | null
     ExercisePlan?: string | null
   }
@@ -8156,6 +8201,7 @@ export namespace Prisma {
   export type MainUpdateWithoutClinicInput = {
     Conversation?: NullableStringFieldUpdateOperationsInput | string | null
     DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    Preference?: NullableStringFieldUpdateOperationsInput | string | null
     DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
     ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
     patient?: PatientUpdateOneRequiredWithoutMainsNestedInput
@@ -8168,6 +8214,7 @@ export namespace Prisma {
     DoctorID?: IntFieldUpdateOperationsInput | number
     Conversation?: NullableStringFieldUpdateOperationsInput | string | null
     DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    Preference?: NullableStringFieldUpdateOperationsInput | string | null
     DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
     ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -8178,6 +8225,7 @@ export namespace Prisma {
     DoctorID?: IntFieldUpdateOperationsInput | number
     Conversation?: NullableStringFieldUpdateOperationsInput | string | null
     DigiPrescription?: NullableStringFieldUpdateOperationsInput | string | null
+    Preference?: NullableStringFieldUpdateOperationsInput | string | null
     DietPlan?: NullableStringFieldUpdateOperationsInput | string | null
     ExercisePlan?: NullableStringFieldUpdateOperationsInput | string | null
   }

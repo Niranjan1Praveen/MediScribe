@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Mic, CircleDot } from "lucide-react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 const barHeights = [20, 32, 16, 40, 24, 40, 16, 32, 20];
 
@@ -57,7 +58,7 @@ export default function AppLiveConversation() {
     }
   };
 
-  const handleStopRecording = async () => {
+  const handleStopRecording = () => {
     setRecording(false);
     setEndTime(Date.now());
     if (!recognitionRef.current) {
@@ -66,47 +67,42 @@ export default function AppLiveConversation() {
       return;
     }
     recognitionRef.current.stop();
+  };
+  const handleSaveTranscript = async () => {
+    const trimmedTranscript = transcript.trim();
+    if (!trimmedTranscript) {
+      toast.error("Transcript is empty.");
+      return;
+    }
 
-    setTimeout(async () => {
-      const trimmedTranscript = transcript.trim();
-      if (!trimmedTranscript) {
-        console.error("No transcript available to send.");
-        alert("No speech was detected. Please try again.");
-        return;
+    const toastId = toast.loading("Saving transcript...");
+
+    try {
+      const res = await fetch("/api/voice-response", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          transcript: trimmedTranscript,
+          patientId: 12,
+          doctorId: 12,
+          clinicId: 1,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.error || "Failed to save transcript");
       }
 
-      try {
-        console.log("Sending transcript:", trimmedTranscript);
-        const res = await fetch("/api/voice-response", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            transcript: trimmedTranscript,
-            patientId: 12,
-            doctorId: 12,
-            clinicId: 1,
-          }),
-        });
-
-        const result = await res.json();
-        console.log("Server response:", result);
-        if (!res.ok) {
-          const errorMsg = result.error || "Failed to save transcript";
-          const errorDetails = result.details || result.code || "";
-          throw new Error(
-            `${errorMsg}${errorDetails ? `: ${errorDetails}` : ""}`
-          );
-        }
-        console.log("Inserted transcript:", result);
-      } catch (error) {
-        console.error("Error posting transcript:", error.message, error);
-        alert(
-          `Error saving transcript: ${error.message}. Check console for details.`
-        );
-      }
-    }, 1000);
+      toast.success("Transcript saved successfully!", { id: toastId });
+    } catch (error) {
+      toast.error(`Failed to save transcript: ${error.message}`, {
+        id: toastId,
+      });
+    }
   };
 
   const getDuration = () => {
@@ -118,7 +114,7 @@ export default function AppLiveConversation() {
   };
 
   return (
-    <div className="flex items-center justify-center p-4">
+    <div className="flex items-center p-4">
       <div className="max-w-4xl w-full flex flex-col md:flex-row gap-8 items-center justify-center">
         <div className="flex-1 flex flex-col items-center">
           <h2 className="text-2xl font-semibold text-primary mb-1">
@@ -146,7 +142,7 @@ export default function AppLiveConversation() {
               className="bg-cyan-500 hover:bg-cyan-600"
               onClick={recording ? handleStopRecording : handleStartRecording}
             >
-              {recording ? "Stop Recording" : "Get Started"}
+              {recording ? "Stop Recording" : "Start Now"}
             </Button>
           </div>
 
@@ -210,38 +206,14 @@ export default function AppLiveConversation() {
               </div>
             </div>
           )}
-        </div>
-
-        <div className="flex flex-col gap-4 w-full max-w-xs">
-          <Card>
-            <CardContent className="p-4 flex flex-col items-center text-center">
-              <h3 className="font-semibold mb-2">Doctor Profile</h3>
-              <Avatar className="mb-2">
-                <AvatarImage src="" alt="Doctor" />
-                <AvatarFallback>JS</AvatarFallback>
-              </Avatar>
-              <p className="font-medium">Dr. John Smith</p>
-              <p className="text-sm text-muted-foreground">Cardiology</p>
-              <Button
-                variant="outline"
-                className="mt-2 text-cyan-600 border-cyan-500 hover:bg-cyan-50"
-              >
-                Cardiology
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4 flex flex-col items-center text-center">
-              <h3 className="font-semibold mb-2">Patient Profile</h3>
-              <Avatar className="mb-2">
-                <AvatarImage src="" alt="Patient" />
-                <AvatarFallback>JD</AvatarFallback>
-              </Avatar>
-              <p className="font-medium">Jane Doe</p>
-              <p className="text-sm text-muted-foreground">45 years</p>
-            </CardContent>
-          </Card>
+          {!recording && transcript && (
+            <Button
+              onClick={handleSaveTranscript}
+              className="mt-4 bg-green-600 hover:bg-green-700 text-white"
+            >
+              Save
+            </Button>
+          )}
         </div>
       </div>
     </div>

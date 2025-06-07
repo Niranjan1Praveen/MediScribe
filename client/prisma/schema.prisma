@@ -16,6 +16,7 @@ model Main {
   ClinicID         Int
   Conversation     String?
   DigiPrescription String?
+  Preference       String?
   DietPlan         String?
   ExercisePlan     String?
   // Relations
