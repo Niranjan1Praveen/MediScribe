@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react"; // For loading state
 
 export default function AppPrescription() {
   const [formData, setFormData] = useState({
@@ -21,11 +21,18 @@ export default function AppPrescription() {
   });
 
   const [conversation, setConversation] = useState("");
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const fetchAutoFill = async () => {
       try {
-        const res = await fetch("/api/generate-prescription"); // ← your server route with Gemini
+        setIsLoading(true);
+        const res = await fetch("/api/generate-prescription");
+        
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
         const data = await res.json();
 
         if (data.error) {
@@ -34,16 +41,23 @@ export default function AppPrescription() {
         }
 
         if (data.conversation) {
-          setConversation(data.conversation); // Show conversation on UI
+          setConversation(data.conversation);
         }
 
         if (data.fields) {
-          setFormData(data.fields); // Auto-fill form
+          setFormData(prev => ({
+            ...prev,
+            ...data.fields,
+            // Ensure age is string (in case Gemini returns number)
+            age: data.fields.age ? String(data.fields.age) : ""
+          }));
           toast.success("Form auto-filled from conversation");
         }
       } catch (err) {
         console.error(err);
         toast.error("Failed to auto-fill from conversation");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -53,6 +67,14 @@ export default function AppPrescription() {
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <section className="flex items-center p-4">
@@ -88,11 +110,12 @@ export default function AppPrescription() {
                   onChange={(e) => handleChange("age", e.target.value)}
                   placeholder="Age"
                   className="w-full"
+                  type="text" // Ensure text type to handle string values
                 />
               </div>
 
               <div className="space-y-3">
-                <Label>Health Goals</Label>
+                <Label>Health Goals<small>(Optional)</small></Label>
                 <Input
                   value={formData.healthGoals}
                   onChange={(e) => handleChange("healthGoals", e.target.value)}
@@ -101,7 +124,7 @@ export default function AppPrescription() {
               </div>
 
               <div className="space-y-3">
-                <Label>Allergies</Label>
+                <Label>Allergies<small>(Optional)</small></Label>
                 <Input
                   value={formData.allergies}
                   onChange={(e) => handleChange("allergies", e.target.value)}
@@ -110,7 +133,7 @@ export default function AppPrescription() {
               </div>
 
               <div className="space-y-3">
-                <Label>Existing Conditions</Label>
+                <Label>Existing Conditions<small>(Optional)</small></Label>
                 <Input
                   value={formData.conditions}
                   onChange={(e) => handleChange("conditions", e.target.value)}
@@ -119,7 +142,7 @@ export default function AppPrescription() {
               </div>
 
               <div className="space-y-3">
-                <Label>Doctor’s Signature</Label>
+                <Label>Doctor's Signature</Label>
                 <Input
                   value={formData.signature}
                   onChange={(e) => handleChange("signature", e.target.value)}
@@ -131,18 +154,7 @@ export default function AppPrescription() {
             </div>
 
             <div className="space-y-4 flex flex-col items-center md:items-start">
-              <div className="flex items-center space-x-3">
-                <Avatar>
-                  <AvatarImage src="" alt="Dr. Zua" />
-                  <AvatarFallback>Dr</AvatarFallback>
-                </Avatar>
-                <div className="text-sm font-medium">
-                  Dr.Zua
-                  <br />
-                  <span className="text-xs text-muted-foreground">All</span>
-                </div>
-              </div>
-
+            
               <Button variant="outline" className="w-full">
                 <Plus className="mr-2 h-4 w-4" /> Add Medication
               </Button>
@@ -150,8 +162,6 @@ export default function AppPrescription() {
               <Button variant="outline" className="w-full">
                 Save as PDF
               </Button>
-
-              <p className="text-sm text-muted-foreground">{conversation}</p>
             </div>
           </div>
         </CardContent>

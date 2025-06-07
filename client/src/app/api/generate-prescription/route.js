@@ -1,36 +1,63 @@
 import prisma from "@/app/utils/db";
 import { NextResponse } from "next/server";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+// Initialize Gemini
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export async function GET() {
   try {
-    // Ensure DB connection
     await prisma.$connect();
-    console.log("Database connected successfully");
-
-    // Get latest conversation
     const latest = await prisma.main.findFirst({
       orderBy: { VisitID: "desc" },
       select: { Conversation: true },
     });
 
-    if (!latest || !latest.Conversation?.trim()) {
+    if (!latest?.Conversation?.trim()) {
       return NextResponse.json(
-        { error: "No valid conversation found in Main table" },
+        { error: "No conversation found" },
         { status: 404 }
       );
     }
 
-    console.log("Fetched latest conversation:", latest.Conversation);
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    return NextResponse.json({ success: true, conversation: latest.Conversation });
+    const prompt = `Analyze this conversation and extract as JSON:
+    ${latest.Conversation}
+    
+    Return ONLY valid JSON (no Markdown formatting) with these fields:
+    {
+      "name": "string",
+      "age": "string",
+      "healthGoals": "string",
+      "allergies": "string",
+      "conditions": "string",
+      "signature": "string"
+    }`;
+
+    const result = await model.generateContent(prompt);
+    const text = await result.response.text();
+    
+    // Clean the response
+    const cleanedText = text.replace(/```json|```/g, '').trim();
+    const extractedFields = JSON.parse(cleanedText);
+
+    return NextResponse.json({ 
+      success: true,
+      conversation: latest.Conversation,
+      fields: extractedFields
+    });
+
   } catch (error) {
-    console.error("Error in GET /generate-prescription:", error.stack);
+    console.error("Error:", error.message);
     return NextResponse.json(
       {
-        error: "Failed to fetch conversation",
-        details: error.message,
-        code: error.code,
-        meta: error.meta,
+        error: error.message.includes("JSON") 
+          ? "Failed to process AI response" 
+          : "AI service unavailable",
+        conversation: latest?.Conversation || "",
+        fields: {}
       },
       { status: 500 }
     );
