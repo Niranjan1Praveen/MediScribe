@@ -1,80 +1,157 @@
 "use client";
 
-import { useState } from "react";
-import { Mic } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Mic, CircleDot } from "lucide-react";
+import { motion } from "framer-motion";
+
+const barHeights = [20, 32, 16, 40, 24, 40, 16, 32, 20];
 
 export default function AppLiveConversation() {
-  const [isRecording, setIsRecording] = useState(false);
-  const [time, setTime] = useState(0);
+  const [recording, setRecording] = useState(false);
+  const [transcript, setTranscript] = useState("");
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+  const recognitionRef = useRef(null);
 
-  const toggleRecording = () => {
-    setIsRecording(!isRecording);
-    if (!isRecording) {
-      setTime(0);
-      const interval = setInterval(() => {
-        setTime((prev) => {
-          if (!isRecording) clearInterval(interval);
-          return prev + 1;
-        });
-      }, 1000);
+  useEffect(() => {
+    if (typeof window !== "undefined" && 'webkitSpeechRecognition' in window) {
+      const SpeechRecognition = (window).webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      recognition.onresult = (event) => {
+        let finalTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript;
+          }
+        }
+        setTranscript(prev => prev + finalTranscript + " ");
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error", event);
+      };
+
+      recognitionRef.current = recognition;
     }
+  }, []);
+
+  const handleStartRecording = () => {
+    setRecording(true);
+    setStartTime(Date.now());
+    setEndTime(null);
+    setTranscript("");
+    recognitionRef.current?.start();
+  };
+
+  const handleStopRecording = () => {
+    setRecording(false);
+    setEndTime(Date.now());
+    recognitionRef.current?.stop();
+  };
+
+  const getDuration = () => {
+    if (startTime && endTime) {
+      const durationInSeconds = Math.floor((endTime - startTime) / 1000);
+      return `${durationInSeconds}s`;
+    }
+    return null;
   };
 
   return (
-    <div className="min-h-screen px-4 py-10">
-      <h1 className="text-2xl font-bold text-gray-800 mb-1">Live Conversation Capture</h1>
-      <p className="text-sm text-gray-500 mb-4">Doctor & Patient Dialogue</p>
+    <div className="flex items-center justify-center p-4">
+      <div className="max-w-4xl w-full flex flex-col md:flex-row gap-8 items-center justify-center">
+        <div className="flex-1 flex flex-col items-center">
+          <h2 className="text-2xl font-semibold text-primary mb-1">Live Conversation Capture</h2>
+          <p className="text-sm text-muted-foreground mb-6">Doctor & Patient Dialogue</p>
 
-      <button className="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-5 py-2 rounded mb-6">
-        Get Started
-      </button>
+          <Button 
+            className="mb-8 bg-cyan-500 hover:bg-cyan-600"
+            onClick={recording ? handleStopRecording : handleStartRecording}
+          >
+            {recording ? "Stop Recording" : "Get Started"}
+          </Button>
 
-      <div className="mb-6">
-        <div className="relative mb-4">
-          <div className="w-20 h-20 bg-cyan-500 rounded-full flex items-center justify-center shadow-lg">
-            <Mic className="text-white w-8 h-8" />
+          <div className="relative mb-6">
+            {recording && (
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <CircleDot className="text-red-500 animate-ping w-4 h-4" />
+              </div>
+            )}
+            <div className="w-20 h-20 bg-cyan-500 rounded-full flex items-center justify-center">
+              <Mic className="text-white w-10 h-10" />
+            </div>
           </div>
-          {isRecording && (
-            <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full border-2 border-white"></span>
+
+          {recording && (
+            <div className="flex items-center gap-[3px]">
+              {barHeights.map((height, i) => (
+                <motion.div
+                  key={i}
+                  className="w-1 bg-cyan-500 rounded"
+                  style={{ height: `${height}px` }}
+                  animate={{ scaleY: [1, 1.8, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, repeatType: "loop", delay: i * 0.1 }}
+                />
+              ))}
+            </div>
+          )}
+
+          <div className="w-full max-w-sm h-1 bg-cyan-500 rounded-full my-5" style={{ width: '80%' }} />
+
+          {startTime && (
+            <p className="text-muted-foreground text-sm mb-1">
+              {recording ? `Recording...` : `Duration: ${getDuration()}`}
+            </p>
+          )}
+
+          {recording && (
+            <p className="text-sm text-cyan-600 cursor-pointer" onClick={handleStopRecording}>
+              Click to stop recording
+            </p>
+          )}
+
+          {!recording && transcript && (
+            <div className="mt-4 space-y-2 text-center">
+              <p className="text-sm text-muted-foreground">Transcript:</p>
+              <div className="text-sm p-2 whitespace-pre-wrap w-full max-w-md">
+                {transcript}
+              </div>
+            </div>
           )}
         </div>
 
+        <div className="flex flex-col gap-4 w-full max-w-xs">
+          <Card>
+            <CardContent className="p-4 flex flex-col items-center text-center">
+              <h3 className="font-semibold mb-2">Doctor Profile</h3>
+              <Avatar className="mb-2">
+                <AvatarImage src="" alt="Doctor" />
+                <AvatarFallback>JS</AvatarFallback>
+              </Avatar>
+              <p className="font-medium">Dr. John Smith</p>
+              <p className="text-sm text-muted-foreground">Cardiology</p>
+              <Button variant="outline" className="mt-2 text-cyan-600 border-cyan-500 hover:bg-cyan-50">Cardiology</Button>
+            </CardContent>
+          </Card>
 
-
-        <div className="w-52 h-1 bg-gray-200 rounded-full overflow-hidden mb-1">
-          <div
-            className="h-full bg-cyan-500 transition-all"
-            style={{ width: `${Math.min((time / 60) * 100, 100)}%` }}
-          />
-        </div>
-        <p className="text-sm text-gray-600 mb-2">0:{time.toString().padStart(2, "0")}</p>
-        <button
-          onClick={toggleRecording}
-          className="text-sm text-gray-700 underline hover:text-gray-900"
-        >
-          Click to {isRecording ? "stop" : "start"} recording
-        </button>
-      </div>
-
-      {/* Doctor & Patient Profile Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
-        {/* Doctor */}
-        <div className="bg-white border rounded-lg p-4 shadow-sm text-center">
-          <p className="text-gray-400 text-sm mb-1">Doctor Profile</p>
-          <div className="w-16 h-16 mx-auto bg-gray-200 rounded-full mb-2" />
-          <h3 className="font-semibold text-gray-800">Dr. John Smith</h3>
-          <p className="text-sm text-gray-500">Cardiology</p>
-          <span className="inline-block mt-2 bg-cyan-100 text-cyan-700 text-xs px-3 py-1 rounded-full">
-            Cardiology
-          </span>
-        </div>
-
-        {/* Patient */}
-        <div className="bg-white border rounded-lg p-4 shadow-sm text-center">
-          <p className="text-gray-400 text-sm mb-1">Patient Profile</p>
-          <div className="w-16 h-16 mx-auto bg-gray-200 rounded-full mb-2" />
-          <h3 className="font-semibold text-gray-800">Jane Doe</h3>
-          <p className="text-sm text-gray-500">45 years</p>
+          <Card>
+            <CardContent className="p-4 flex flex-col items-center text-center">
+              <h3 className="font-semibold mb-2">Patient Profile</h3>
+              <Avatar className="mb-2">
+                <AvatarImage src="" alt="Patient" />
+                <AvatarFallback>JD</AvatarFallback>
+              </Avatar>
+              <p className="font-medium">Jane Doe</p>
+              <p className="text-sm text-muted-foreground">45 years</p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

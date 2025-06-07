@@ -1,11 +1,10 @@
 import {
-  Home,
-  Settings,
-  FlaskConical, 
-  BarChart3, 
-  BookOpenText, 
+  Stethoscope,
+  MessageCircle,
+  Salad,
+  Dumbbell,
   User2,
-  ChevronUp,
+  ChevronUp
 } from "lucide-react";
 
 import {
@@ -33,14 +32,24 @@ import {
 
 const items = [
   {
-    title: "Home",
+    title: "Digital Prescription",
     url: "/dashboard",
-    icon: Home,
+    icon: Stethoscope,
   },
   {
     title: "Live Conversation",
     url: "/dashboard/liveConversation",
-    icon: Home,
+    icon: MessageCircle,
+  },
+  {
+    title: "Diet Generator",
+    url: "/dashboard/dietGenerator",
+    icon: Salad,
+  },
+  {
+    title: "Exercise Generator",
+    url: "/dashboard/exerciseGenerator",
+    icon: Dumbbell,
   },
 ];
 

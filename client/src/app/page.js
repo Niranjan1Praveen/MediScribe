@@ -4,18 +4,18 @@ import Footer from "@/sections/Footer";
 import Hero from "@/sections/Hero";
 import LogoTicker from "@/sections/LogoTicker";
 import Navbar from "@/sections/Navbar";
+import Pricing from "@/sections/Pricing";
 
 const Home = () => {
   return (
     <main>
       <Navbar />
       <Hero />
+      <LogoTicker />
       <Features />
-      {/* <div className="bg-gradient-to-r from-[#28B983] via-[#20C9CC] to-[#3AC49B]"> */}
-        <LogoTicker />
-        <Faqs />
-        <Footer />
-      {/* </div> */}
+      <Pricing/>
+      <Faqs />
+      <Footer />
     </main>
   );
 };
