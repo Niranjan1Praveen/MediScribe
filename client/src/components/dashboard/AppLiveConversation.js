@@ -134,8 +134,12 @@ export default function AppLiveConversation() {
               onChange={(e) => setLanguage(e.target.value)}
               className="rounded p-2"
             >
-              <option value="en-US" className="text-black">English</option>
-              <option value="hi-IN" className="text-black">Hindi</option>
+              <option value="en-US" className="text-black">
+                English
+              </option>
+              <option value="hi-IN" className="text-black">
+                Hindi
+              </option>
             </select>
 
             <Button
@@ -157,24 +161,26 @@ export default function AppLiveConversation() {
             </div>
           </div>
 
-          {recording && (
-            <div className="flex items-center gap-[3px]">
-              {barHeights.map((height, i) => (
-                <motion.div
-                  key={i}
-                  className="w-1 bg-cyan-500 rounded"
-                  style={{ height: `${height}px` }}
-                  animate={{ scaleY: [1, 1.8, 1] }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    repeatType: "loop",
-                    delay: i * 0.1,
-                  }}
-                />
-              ))}
-            </div>
-          )}
+          <div className="flex items-center gap-[3px]">
+            {barHeights.map((height, i) => (
+              <motion.div
+                key={i}
+                className="w-1 bg-cyan-500 rounded"
+                style={{ height: `${height}px` }}
+                animate={recording ? { scaleY: [1, 1.8, 1] } : { scaleY: 1 }}
+                transition={
+                  recording
+                    ? {
+                        duration: 2,
+                        repeat: Infinity,
+                        repeatType: "loop",
+                        delay: i * 0.1,
+                      }
+                    : { duration: 0 }
+                }
+              />
+            ))}
+          </div>
 
           <div
             className="w-full max-w-sm h-1 bg-cyan-500 rounded-full my-5"
