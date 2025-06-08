@@ -132,9 +132,29 @@ exports.Prisma.MainScalarFieldEnum = {
   ExercisePlan: 'ExercisePlan'
 };
 
-exports.Prisma.PatientScalarFieldEnum = {
+exports.Prisma.ConsultationScalarFieldEnum = {
+  VisitID: 'VisitID',
   PatientID: 'PatientID',
-  PatientName: 'PatientName'
+  Conversation: 'Conversation',
+  DigiPrescription: 'DigiPrescription',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PatientScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  age: 'age',
+  dietaryPreferences: 'dietaryPreferences',
+  healthGoals: 'healthGoals',
+  allergies: 'allergies',
+  conditions: 'conditions',
+  keyIssues: 'keyIssues',
+  decisions: 'decisions',
+  medications: 'medications',
+  prescriptionText: 'prescriptionText',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.DoctorScalarFieldEnum = {
@@ -147,14 +167,14 @@ exports.Prisma.ClinicScalarFieldEnum = {
   Name: 'Name'
 };
 
-exports.Prisma.TestScalarFieldEnum = {
-  ClinicID: 'ClinicID',
-  Name: 'Name'
-};
-
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -167,13 +187,19 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
 
 exports.Prisma.ModelName = {
   Main: 'Main',
+  Consultation: 'Consultation',
   Patient: 'Patient',
   Doctor: 'Doctor',
-  Clinic: 'Clinic',
-  Test: 'Test'
+  Clinic: 'Clinic'
 };
 
 /**

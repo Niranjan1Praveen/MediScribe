@@ -19,14 +19,15 @@ export default function AppPrescription() {
     healthGoals: "",
     allergies: "",
     conditions: "",
-    signature: "",
     keyIssues: "",
     decisions: "",
     medications: "",
+    dietaryPreferences: [], // Added to store dietary preferences
   });
 
   const [conversation, setConversation] = useState("");
   const [prescription, setPrescription] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +46,6 @@ export default function AppPrescription() {
           toast.error("Failed: " + data.error);
           return;
         }
-        console.log(data);
 
         if (data.conversation) {
           setConversation(data.conversation);
@@ -58,6 +58,7 @@ export default function AppPrescription() {
             ...prev,
             ...data.fields,
             age: data.fields.age ? String(data.fields.age) : "",
+            dietaryPreferences: data.fields.dietaryPreferences || [],
           }));
           toast.success("Form auto-filled from conversation");
         }
@@ -76,6 +77,40 @@ export default function AppPrescription() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handleDietaryChange = (preference) => {
+    setFormData((prev) => {
+      const dietaryPreferences = prev.dietaryPreferences.includes(preference)
+        ? prev.dietaryPreferences.filter((p) => p !== preference)
+        : [...prev.dietaryPreferences, preference];
+      return { ...prev, dietaryPreferences };
+    });
+  };
+
+  const handleFinalize = async () => {
+    try {
+      const res = await fetch("/api/patient-details", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          prescriptionText: prescription,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const data = await res.json();
+      toast.success("Prescription saved successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to save prescription to database");
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -83,7 +118,6 @@ export default function AppPrescription() {
       </div>
     );
   }
-  console.log(prescription);
 
   return (
     <section className="flex items-center p-4">
@@ -122,20 +156,6 @@ export default function AppPrescription() {
                   type="text"
                 />
               </div>
-              {/* Dietary Preferences */}
-              <div className="space-y-2">
-                <Label>
-                  Dietary Preferences<small>(Optional)</small>
-                </Label>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <Checkbox /> <span>Vegetarian</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Checkbox /> <span>Gluten-Free</span>
-                  </div>
-                </div>
-              </div>
 
               <div className="space-y-3">
                 <Label>Key Issues</Label>
@@ -155,7 +175,7 @@ export default function AppPrescription() {
               </div>
               <div className="space-y-3">
                 <Label>
-                  Medications<small>(Optional)</small>
+                  Medications <small>(Optional)</small>
                 </Label>
                 <Textarea
                   value={formData.medications}
@@ -165,7 +185,32 @@ export default function AppPrescription() {
               </div>
               <div className="space-y-3">
                 <Label>
-                  Health Goals<small>(Optional)</small>
+                  Dietary Preferences <small>(Optional)</small>
+                </Label>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      checked={formData.dietaryPreferences.includes(
+                        "Vegetarian"
+                      )}
+                      onCheckedChange={() => handleDietaryChange("Vegetarian")}
+                    />
+                    <span>Vegetarian</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      checked={formData.dietaryPreferences.includes(
+                        "Gluten-Free"
+                      )}
+                      onCheckedChange={() => handleDietaryChange("Gluten-Free")}
+                    />
+                    <span>Gluten-Free</span>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <Label>
+                  Health Goals <small>(Optional)</small>
                 </Label>
                 <Textarea
                   value={formData.healthGoals}
@@ -175,7 +220,7 @@ export default function AppPrescription() {
               </div>
               <div className="space-y-3">
                 <Label>
-                  Allergies<small>(Optional)</small>
+                  Allergies <small>(Optional)</small>
                 </Label>
                 <Input
                   value={formData.allergies}
@@ -183,9 +228,10 @@ export default function AppPrescription() {
                   placeholder="e.g. peanuts, dairy"
                 />
               </div>
+
               <div className="space-y-3">
                 <Label>
-                  Existing Conditions<small>(Optional)</small>
+                  Existing Conditions <small>(Optional)</small>
                 </Label>
                 <Input
                   value={formData.conditions}
@@ -214,7 +260,9 @@ export default function AppPrescription() {
                   </div>
                 )}
               </div>
-              <Button className="w-full bg-cyan-500">Finalize & Send</Button>
+              <Button className="w-full bg-cyan-500" onClick={handleFinalize}>
+                Finalize & Send
+              </Button>
             </div>
 
             <div className="space-y-4 flex flex-col items-center md:items-start">
