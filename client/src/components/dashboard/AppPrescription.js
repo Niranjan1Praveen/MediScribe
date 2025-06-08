@@ -27,7 +27,6 @@ export default function AppPrescription() {
 
   const [conversation, setConversation] = useState("");
   const [prescription, setPrescription] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -76,22 +75,7 @@ export default function AppPrescription() {
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
-  const handlePrescriptionChange = (e) => {
-    setPrescription(e.target.value);
-  };
 
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
-  };
-
-  const savePrescription = async () => {
-    try {
-      setIsEditing(false);
-      toast.success("Prescription updated");
-    } catch (error) {
-      toast.error("Failed to save prescription");
-    }
-  };
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -199,7 +183,6 @@ export default function AppPrescription() {
                   placeholder="e.g. peanuts, dairy"
                 />
               </div>
-
               <div className="space-y-3">
                 <Label>
                   Existing Conditions<small>(Optional)</small>
@@ -231,7 +214,6 @@ export default function AppPrescription() {
                   </div>
                 )}
               </div>
-
               <Button className="w-full bg-cyan-500">Finalize & Send</Button>
             </div>
 
