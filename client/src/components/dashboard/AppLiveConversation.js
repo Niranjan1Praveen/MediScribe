@@ -7,8 +7,8 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "../ui/label";
-import { v4 as uuidv4 } from 'uuid';
-
+import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/navigation";
 const barHeights = [20, 32, 16, 40, 24, 40, 16, 32, 20];
 
 export default function AppLiveConversation() {
@@ -20,7 +20,8 @@ export default function AppLiveConversation() {
   const [language, setLanguage] = useState("en-US");
   const [activeTab, setActiveTab] = useState("voice");
   const recognitionRef = useRef(null);
-const [patientId, setPatientId] = useState('');
+  const router = useRouter();
+  const [patientId, setPatientId] = useState("");
   useEffect(() => {
     setPatientId(uuidv4());
     if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
@@ -88,6 +89,7 @@ const [patientId, setPatientId] = useState('');
         id: toastId,
       });
     }
+    setTimeout(() => router.push("/dashboard"), 1000);
   };
 
   const handleStartRecording = () => {

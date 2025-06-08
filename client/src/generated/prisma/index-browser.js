@@ -120,18 +120,6 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.MainScalarFieldEnum = {
-  VisitID: 'VisitID',
-  PatientID: 'PatientID',
-  DoctorID: 'DoctorID',
-  ClinicID: 'ClinicID',
-  Conversation: 'Conversation',
-  DigiPrescription: 'DigiPrescription',
-  Preference: 'Preference',
-  DietPlan: 'DietPlan',
-  ExercisePlan: 'ExercisePlan'
-};
-
 exports.Prisma.ConsultationScalarFieldEnum = {
   VisitID: 'VisitID',
   PatientID: 'PatientID',
@@ -155,16 +143,6 @@ exports.Prisma.PatientScalarFieldEnum = {
   prescriptionText: 'prescriptionText',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
-};
-
-exports.Prisma.DoctorScalarFieldEnum = {
-  DoctorID: 'DoctorID',
-  Name: 'Name'
-};
-
-exports.Prisma.ClinicScalarFieldEnum = {
-  ClinicID: 'ClinicID',
-  Name: 'Name'
 };
 
 exports.Prisma.SortOrder = {
@@ -195,11 +173,8 @@ exports.Prisma.JsonNullValueFilter = {
 
 
 exports.Prisma.ModelName = {
-  Main: 'Main',
   Consultation: 'Consultation',
-  Patient: 'Patient',
-  Doctor: 'Doctor',
-  Clinic: 'Clinic'
+  Patient: 'Patient'
 };
 
 /**

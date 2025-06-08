@@ -4,7 +4,10 @@ import {
   Salad,
   Dumbbell,
   User2,
-  ChevronUp
+  ChevronUp,
+  Search,
+  Mic2,
+  Mic
 } from "lucide-react";
 
 import {
@@ -39,17 +42,12 @@ const items = [
   {
     title: "Live Conversation",
     url: "/dashboard/liveConversation",
-    icon: MessageCircle,
+    icon: Mic,
   },
   {
-    title: "Diet Generator",
-    url: "/dashboard/dietGenerator",
-    icon: Salad,
-  },
-  {
-    title: "Exercise Generator",
-    url: "/dashboard/exerciseGenerator",
-    icon: Dumbbell,
+    title: "Search Prescription",
+    url: "/dashboard/searchPrescription",
+    icon: Search,
   },
 ];
 

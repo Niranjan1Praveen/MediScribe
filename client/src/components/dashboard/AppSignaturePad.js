@@ -6,8 +6,8 @@ import { Button } from "../ui/button";
 
 export default function AppSignaturePad({
   onSave,
-  width = 400,
-  height = 200,
+  width = 250,
+  height = 100,
   penColor = "cyan",
   clearOnSave = false,
 }) {

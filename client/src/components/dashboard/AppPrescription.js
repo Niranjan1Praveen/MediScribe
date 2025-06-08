@@ -1,17 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { toast } from "sonner";
 import Loader from "../ui/loader";
 import { Checkbox } from "../ui/checkbox";
 import { Textarea } from "../ui/textarea";
 import SignaturePad from "@/components/dashboard/AppSignaturePad";
-
 export default function AppPrescription() {
   const [formData, setFormData] = useState({
     name: "",
@@ -27,7 +26,6 @@ export default function AppPrescription() {
 
   const [conversation, setConversation] = useState("");
   const [prescription, setPrescription] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [medications, setMedications] = useState([]);
 
@@ -145,7 +143,7 @@ export default function AppPrescription() {
     <section className="flex items-center p-4">
       <div className="w-full max-w-5xl rounded-xl shadow-md border-none">
         <CardContent>
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
             <div>
               <h2 className="text-2xl font-semibold text-primary">
                 Digital Prescription
@@ -154,6 +152,13 @@ export default function AppPrescription() {
                 Doctor & Patient Dialogue
               </p>
             </div>
+
+            <div className="flex gap-2">
+              <Button variant="outline">
+                Save as PDF
+              </Button>
+              <Button variant="outline">Print</Button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -161,7 +166,7 @@ export default function AppPrescription() {
               <div className="flex items-center space-x-2">
                 <Label className="w-1/3">Patient Name</Label>
                 <Input
-                  value={formData.name}
+                  value={formData.name || ""}
                   onChange={(e) => handleChange("name", e.target.value)}
                   placeholder="Name"
                   className="w-full"
@@ -171,7 +176,7 @@ export default function AppPrescription() {
               <div className="flex items-center space-x-2">
                 <Label className="w-1/3">Age</Label>
                 <Input
-                  value={formData.age}
+                  value={formData.age || ""}
                   onChange={(e) => handleChange("age", e.target.value)}
                   placeholder="Age"
                   className="w-full"
@@ -182,7 +187,7 @@ export default function AppPrescription() {
               <div className="space-y-3">
                 <Label>Key Issues</Label>
                 <Textarea
-                  value={formData.keyIssues}
+                  value={formData.keyIssues || ""}
                   onChange={(e) => handleChange("keyIssues", e.target.value)}
                   placeholder="e.g. fatigue, low energy"
                 />
@@ -190,7 +195,7 @@ export default function AppPrescription() {
               <div className="space-y-3">
                 <Label>Decisions</Label>
                 <Textarea
-                  value={formData.decisions}
+                  value={formData.decisions || ""}
                   onChange={(e) => handleChange("decisions", e.target.value)}
                   placeholder="e.g. perform tests"
                 />
@@ -200,7 +205,7 @@ export default function AppPrescription() {
                   Medications <small>(Optional)</small>
                 </Label>
                 <Textarea
-                  value={formData.medications}
+                  value={formData.medications || ""}
                   onChange={(e) => handleChange("medications", e.target.value)}
                   placeholder="e.g. inhaler"
                 />
@@ -235,7 +240,7 @@ export default function AppPrescription() {
                   Health Goals <small>(Optional)</small>
                 </Label>
                 <Textarea
-                  value={formData.healthGoals}
+                  value={formData.healthGoals || ""}
                   onChange={(e) => handleChange("healthGoals", e.target.value)}
                   placeholder="Weight Loss, Heart Health"
                 />
@@ -245,7 +250,7 @@ export default function AppPrescription() {
                   Allergies <small>(Optional)</small>
                 </Label>
                 <Input
-                  value={formData.allergies}
+                  value={formData.allergies || ""}
                   onChange={(e) => handleChange("allergies", e.target.value)}
                   placeholder="e.g. peanuts, dairy"
                 />
@@ -261,15 +266,13 @@ export default function AppPrescription() {
                   placeholder="Hypertension, High Cholesterol"
                 />
               </div>
-
+              {/* Doctor's Signature */}
               <div className="space-y-3">
                 <label className="block text-sm font-medium">
                   Doctor's Signature
                 </label>
                 <SignaturePad
                   onSave={(signature) => handleChange("signature", signature)}
-                  width={400}
-                  height={200}
                 />
                 {formData.signature && (
                   <div className="mt-2">
@@ -286,7 +289,7 @@ export default function AppPrescription() {
                 Finalize & Send
               </Button>
             </div>
-
+            {/* Medications */}
             <div className="space-y-4 w-full">
               <Button
                 variant="outline"
@@ -301,7 +304,7 @@ export default function AppPrescription() {
                   <Card key={index}>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">
-                        Medication #{index + 1}
+                        Medication {index + 1}
                       </CardTitle>
                       <Button
                         variant="ghost"
@@ -316,7 +319,7 @@ export default function AppPrescription() {
                         <Label htmlFor={`med-name-${index}`}>Name</Label>
                         <Input
                           id={`med-name-${index}`}
-                          value={med.name}
+                          value={med.name || ""}
                           onChange={(e) =>
                             handleMedicationChange(
                               index,
@@ -333,7 +336,7 @@ export default function AppPrescription() {
                           <Label htmlFor={`med-dosage-${index}`}>Dosage</Label>
                           <Input
                             id={`med-dosage-${index}`}
-                            value={med.dosage}
+                            value={med.dosage || ""}
                             onChange={(e) =>
                               handleMedicationChange(
                                 index,
@@ -385,10 +388,6 @@ export default function AppPrescription() {
                   </Card>
                 ))}
               </div>
-
-              <Button variant="outline" className="w-full">
-                Save as PDF
-              </Button>
             </div>
           </div>
         </CardContent>
