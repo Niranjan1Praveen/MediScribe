@@ -22,7 +22,7 @@ export default function Features() {
           <FeatureCard
             title={"Voice-to-Note AI Transcription"}
             description={
-              "Automatically transcribe doctor-patient conversations in real-time using Whisper and MedSpaCy. Extract structured clinical notes and store them securely."
+              "Automatically transcribe doctor-patient conversations in real-time using Gemini. Extract structured clinical notes and store them securely."
             }
             className="md:col-span-2 lg:col-span-1"
           >
@@ -63,7 +63,7 @@ export default function Features() {
           <FeatureCard
             title={"AI-Powered Prescriptions & Recommendations"}
             description={
-              "Generate personalized prescriptions, diet plans, and fitness routines using GPT-4. Everything is editable, downloadable, and digitally signed."
+              "Generate personalized prescriptions, diet plans, and fitness routines using Gemini. Everything is editable, downloadable, and digitally signed."
             }
             className="md:col-span-2 lg:col-span-1"
           >

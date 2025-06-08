@@ -6,11 +6,15 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export async function GET() {
+  let latest;
   try {
     await prisma.$connect();
-    const latest = await prisma.main.findFirst({
+    latest = await prisma.main.findFirst({
       orderBy: { VisitID: "desc" },
-      select: { Conversation: true },
+      select: { 
+        Conversation: true,
+        DigiPrescription: true  // Add this field to the selection
+      },
     });
 
     if (!latest?.Conversation?.trim()) {
@@ -33,7 +37,11 @@ export async function GET() {
       "healthGoals": "string",
       "allergies": "string",
       "conditions": "string",
-      "signature": "string"
+      "signature": "string",
+      "keyIssues": "string",
+      "decisions": "string",
+      "actionItems": "string",
+      "medications": "string",
     }`;
 
     const result = await model.generateContent(prompt);
@@ -46,6 +54,7 @@ export async function GET() {
     return NextResponse.json({ 
       success: true,
       conversation: latest.Conversation,
+      digiPrescription: latest.DigiPrescription,  
       fields: extractedFields
     });
 
@@ -57,6 +66,7 @@ export async function GET() {
           ? "Failed to process AI response" 
           : "AI service unavailable",
         conversation: latest?.Conversation || "",
+        digiPrescription: latest?.DigiPrescription || "", 
         fields: {}
       },
       { status: 500 }

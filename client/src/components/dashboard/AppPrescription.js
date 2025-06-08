@@ -5,10 +5,12 @@ import { CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react"; // For loading state
+import Loader from "../ui/loader";
+import { Checkbox } from "../ui/checkbox";
+import { Textarea } from "../ui/textarea";
+import SignaturePad from "@/components/dashboard/AppSignaturePad";
 
 export default function AppPrescription() {
   const [formData, setFormData] = useState({
@@ -18,17 +20,22 @@ export default function AppPrescription() {
     allergies: "",
     conditions: "",
     signature: "",
+    keyIssues: "",
+    decisions: "",
+    medications: "",
   });
 
   const [conversation, setConversation] = useState("");
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [prescription, setPrescription] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAutoFill = async () => {
       try {
         setIsLoading(true);
         const res = await fetch("/api/generate-prescription");
-        
+
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
@@ -39,17 +46,19 @@ export default function AppPrescription() {
           toast.error("Failed: " + data.error);
           return;
         }
+        console.log(data);
 
         if (data.conversation) {
           setConversation(data.conversation);
         }
-
+        if (data.digiPrescription) {
+          setPrescription(data.digiPrescription);
+        }
         if (data.fields) {
-          setFormData(prev => ({
+          setFormData((prev) => ({
             ...prev,
             ...data.fields,
-            // Ensure age is string (in case Gemini returns number)
-            age: data.fields.age ? String(data.fields.age) : ""
+            age: data.fields.age ? String(data.fields.age) : "",
           }));
           toast.success("Form auto-filled from conversation");
         }
@@ -67,18 +76,34 @@ export default function AppPrescription() {
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
+  const handlePrescriptionChange = (e) => {
+    setPrescription(e.target.value);
+  };
 
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const savePrescription = async () => {
+    try {
+      setIsEditing(false);
+      toast.success("Prescription updated");
+    } catch (error) {
+      toast.error("Failed to save prescription");
+    }
+  };
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loader />
       </div>
     );
   }
+  console.log(prescription);
 
   return (
     <section className="flex items-center p-4">
-      <div className="w-full max-w-3xl rounded-xl shadow-md border-none">
+      <div className="w-full max-w-5xl rounded-xl shadow-md border-none">
         <CardContent>
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -110,21 +135,64 @@ export default function AppPrescription() {
                   onChange={(e) => handleChange("age", e.target.value)}
                   placeholder="Age"
                   className="w-full"
-                  type="text" // Ensure text type to handle string values
+                  type="text"
                 />
+              </div>
+              {/* Dietary Preferences */}
+              <div className="space-y-2">
+                <Label>
+                  Dietary Preferences<small>(Optional)</small>
+                </Label>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <Checkbox /> <span>Vegetarian</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Checkbox /> <span>Gluten-Free</span>
+                  </div>
+                </div>
               </div>
 
               <div className="space-y-3">
-                <Label>Health Goals<small>(Optional)</small></Label>
-                <Input
+                <Label>Key Issues</Label>
+                <Textarea
+                  value={formData.keyIssues}
+                  onChange={(e) => handleChange("keyIssues", e.target.value)}
+                  placeholder="e.g. fatigue, low energy"
+                />
+              </div>
+              <div className="space-y-3">
+                <Label>Decisions</Label>
+                <Textarea
+                  value={formData.decisions}
+                  onChange={(e) => handleChange("decisions", e.target.value)}
+                  placeholder="e.g. perform tests"
+                />
+              </div>
+              <div className="space-y-3">
+                <Label>
+                  Medications<small>(Optional)</small>
+                </Label>
+                <Textarea
+                  value={formData.medications}
+                  onChange={(e) => handleChange("medications", e.target.value)}
+                  placeholder="e.g. inhaler"
+                />
+              </div>
+              <div className="space-y-3">
+                <Label>
+                  Health Goals<small>(Optional)</small>
+                </Label>
+                <Textarea
                   value={formData.healthGoals}
                   onChange={(e) => handleChange("healthGoals", e.target.value)}
                   placeholder="Weight Loss, Heart Health"
                 />
               </div>
-
               <div className="space-y-3">
-                <Label>Allergies<small>(Optional)</small></Label>
+                <Label>
+                  Allergies<small>(Optional)</small>
+                </Label>
                 <Input
                   value={formData.allergies}
                   onChange={(e) => handleChange("allergies", e.target.value)}
@@ -133,7 +201,9 @@ export default function AppPrescription() {
               </div>
 
               <div className="space-y-3">
-                <Label>Existing Conditions<small>(Optional)</small></Label>
+                <Label>
+                  Existing Conditions<small>(Optional)</small>
+                </Label>
                 <Input
                   value={formData.conditions}
                   onChange={(e) => handleChange("conditions", e.target.value)}
@@ -142,19 +212,30 @@ export default function AppPrescription() {
               </div>
 
               <div className="space-y-3">
-                <Label>Doctor's Signature</Label>
-                <Input
-                  value={formData.signature}
-                  onChange={(e) => handleChange("signature", e.target.value)}
-                  placeholder="Sign Here"
+                <label className="block text-sm font-medium">
+                  Doctor's Signature
+                </label>
+                <SignaturePad
+                  onSave={(signature) => handleChange("signature", signature)}
+                  width={400}
+                  height={200}
                 />
+                {formData.signature && (
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">Saved signature:</p>
+                    <img
+                      src={formData.signature}
+                      alt="Doctor's signature"
+                      className="h-20 border rounded"
+                    />
+                  </div>
+                )}
               </div>
 
               <Button className="w-full bg-cyan-500">Finalize & Send</Button>
             </div>
 
             <div className="space-y-4 flex flex-col items-center md:items-start">
-            
               <Button variant="outline" className="w-full">
                 <Plus className="mr-2 h-4 w-4" /> Add Medication
               </Button>
