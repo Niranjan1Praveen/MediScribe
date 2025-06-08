@@ -5,22 +5,24 @@ import { Button } from "@/components/ui/button";
 import { Mic, CircleDot, Keyboard } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { Textarea } from "@/components/ui/textarea"; // Import from shadcn
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "../ui/label";
+import { v4 as uuidv4 } from 'uuid';
 
 const barHeights = [20, 32, 16, 40, 24, 40, 16, 32, 20];
 
 export default function AppLiveConversation() {
   const [recording, setRecording] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const [manualInput, setManualInput] = useState(""); // New state for textbox
+  const [manualInput, setManualInput] = useState("");
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [language, setLanguage] = useState("en-US");
-  const [activeTab, setActiveTab] = useState("voice"); // 'voice' or 'text'
+  const [activeTab, setActiveTab] = useState("voice");
   const recognitionRef = useRef(null);
-
+const [patientId, setPatientId] = useState('');
   useEffect(() => {
+    setPatientId(uuidv4());
     if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
       const SpeechRecognition = window.webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
@@ -63,9 +65,7 @@ export default function AppLiveConversation() {
         },
         body: JSON.stringify({
           transcript: trimmedContent,
-          patientId: 12,
-          doctorId: 12,
-          clinicId: 1,
+          patientId: patientId,
         }),
       });
 
@@ -89,6 +89,7 @@ export default function AppLiveConversation() {
       });
     }
   };
+
   const handleStartRecording = () => {
     setRecording(true);
     setStartTime(Date.now());
@@ -112,42 +113,6 @@ export default function AppLiveConversation() {
       return;
     }
     recognitionRef.current.stop();
-  };
-  const handleSaveTranscript = async () => {
-    const trimmedTranscript = transcript.trim();
-    if (!trimmedTranscript) {
-      toast.error("Transcript is empty.");
-      return;
-    }
-
-    const toastId = toast.loading("Saving transcript...");
-
-    try {
-      const res = await fetch("/api/voice-response", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          transcript: trimmedTranscript,
-          patientId: 12,
-          doctorId: 12,
-          clinicId: 1,
-        }),
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.error || "Failed to save transcript");
-      }
-
-      toast.success("Transcript saved successfully!", { id: toastId });
-    } catch (error) {
-      toast.error(`Failed to save transcript: ${error.message}`, {
-        id: toastId,
-      });
-    }
   };
 
   const getDuration = () => {
@@ -276,12 +241,12 @@ export default function AppLiveConversation() {
               {!recording && transcript && (
                 <div className="mt-4 space-y-2 text-center w-full">
                   <p className="text-sm text-muted-foreground">Transcript:</p>
-                  <div className="text-sm p-4 rounded-md bg-gray-50 whitespace-pre-wrap w-full max-w-md min-h-24">
+                  <div className="text-sm p-4 rounded-md whitespace-pre-wrap w-full max-w-md">
                     {transcript}
                   </div>
                   <Button
                     onClick={() => handleSave(transcript)}
-                    className="mt-4 bg-green-600 hover:bg-green-700 text-white"
+                    className="bg-cyan-600 hover:bg-cyan-700 text-white"
                   >
                     Save Transcript
                   </Button>
@@ -304,7 +269,7 @@ export default function AppLiveConversation() {
               </div>
               <Button
                 onClick={() => handleSave(manualInput)}
-                className="w-full bg-green-600 hover:bg-green-700"
+                className="w-full bg-cyan-600 hover:bg-cyan-700"
                 disabled={!manualInput.trim()}
               >
                 <Keyboard className="mr-2 h-4 w-4" />

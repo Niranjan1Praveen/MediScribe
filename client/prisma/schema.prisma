@@ -23,7 +23,7 @@ model Main {
 
 model Consultation {
   VisitID          Int      @id @default(autoincrement())
-  PatientID        String   @unique
+  PatientID        String   @unique @default(uuid())
   Conversation     String?
   DigiPrescription String?
   createdAt        DateTime @default(now())

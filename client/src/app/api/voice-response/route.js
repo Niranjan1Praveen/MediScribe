@@ -7,98 +7,58 @@ export async function POST(req) {
     await prisma.$connect();
     console.log("Database connected successfully");
 
+    // Check if Consultation model exists
+    if (!prisma.Consultation) {
+      console.error("Consultation model not found in Prisma client");
+      return NextResponse.json(
+        { error: "Consultation model not found in Prisma client. Ensure Prisma schema is correctly defined and generated." },
+        { status: 500 }
+      );
+    }
+
     const body = await req.json();
-    const { transcript, patientId, doctorId, clinicId } = body;
+    const { transcript, patientId } = body;
 
     console.log("Received request body:", body);
 
-    if (!transcript?.trim() || patientId === undefined || doctorId === undefined || clinicId === undefined) {
+    // Validate input fields
+    if (!transcript?.trim() || patientId === undefined) {
       return NextResponse.json(
         {
           error: "Missing or invalid required fields",
           details: {
             transcript: !!transcript?.trim(),
             patientId: !!patientId,
-            doctorId: !!doctorId,
-            clinicId: !!clinicId,
           },
         },
         { status: 400 }
       );
     }
 
-    if (
-      !Number.isInteger(Number(patientId)) ||
-      !Number.isInteger(Number(doctorId)) ||
-      !Number.isInteger(Number(clinicId))
-    ) {
+    // Validate patientId is a non-empty string
+    if (typeof patientId !== "string" || !patientId.trim()) {
       return NextResponse.json(
-        { error: "Invalid data: patientId, doctorId, and clinicId must be valid integers" },
+        { error: "Invalid data: patientId must be a valid non-empty string" },
         { status: 400 }
       );
     }
 
-    let patientExists, doctorExists, clinicExists;
+    // Insert into Consultation table
     try {
-      patientExists = await prisma.patient.findFirst({ where: { PatientID: Number(patientId) } });
-      console.log("Patient exists:", patientExists);
-    } catch (error) {
-      console.error("Error checking patient:", error);
-      return NextResponse.json(
-        { error: "Database error: Failed to verify patient", details: error.message, code: error.code },
-        { status: 500 }
-      );
-    }
-    try {
-      doctorExists = await prisma.doctor.findFirst({ where: { DoctorID: Number(doctorId) } });
-      console.log("Doctor exists:", doctorExists);
-    } catch (error) {
-      console.error("Error checking doctor:", error);
-      return NextResponse.json(
-        { error: "Database error: Failed to verify doctor", details: error.message, code: error.code },
-        { status: 500 }
-      );
-    }
-    try {
-      clinicExists = await prisma.clinic.findFirst({ where: { ClinicID: Number(clinicId) } });
-      console.log("Clinic exists:", clinicExists);
-    } catch (error) {
-      console.error("Error checking clinic:", error);
-      return NextResponse.json(
-        { error: "Database error: Failed to verify clinic", details: error.message, code: error.code },
-        { status: 500 }
-      );
-    }
-
-    if (!patientExists) {
-      return NextResponse.json({ error: "Invalid patientId: Patient does not exist" }, { status: 400 });
-    }
-    if (!doctorExists) {
-      return NextResponse.json({ error: "Invalid doctorId: Doctor does not exist" }, { status: 400 });
-    }
-    if (!clinicExists) {
-      return NextResponse.json({ error: "Invalid clinicId: Clinic does not exist" }, { status: 400 });
-    }
-
-    try {
-      const response = await prisma.main.create({
+      const response = await prisma.consultation.create({
         data: {
-          PatientID: Number(patientId),
-          DoctorID: Number(doctorId),
-          ClinicID: Number(clinicId),
+          PatientID: patientId,
           Conversation: transcript.trim(),
-          DigiPrescription: "",
-          DietPlan: "",
-          ExercisePlan: "",
+          DigiPrescription: "", // Default empty string as per schema
         },
       });
       console.log("Insert successful:", response);
-      return NextResponse.json({ success: true, data: response });
+      return NextResponse.json({ success: true, data: response }, { status: 201 });
     } catch (error) {
       console.error("Prisma insert error:", error);
-      let errorMsg = "Failed to insert into Main";
+      let errorMsg = "Failed to insert into Consultation";
       if (error.code === "P2002") {
-        errorMsg = "Unique constraint violation in Main table";
+        errorMsg = "Unique constraint violation: PatientID already exists in Consultation table";
       } else if (error.code === "P2003") {
         errorMsg = "Foreign key constraint violation";
       }

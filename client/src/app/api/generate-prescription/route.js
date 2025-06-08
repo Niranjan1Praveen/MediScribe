@@ -9,11 +9,20 @@ export async function GET() {
   let latest;
   try {
     await prisma.$connect();
-    latest = await prisma.main.findFirst({
+    // Check if Consultation model exists
+    if (!prisma.Consultation) {
+      console.error("Consultation model not found in Prisma client");
+      return NextResponse.json(
+        { error: "Consultation model not found in Prisma client. Ensure Prisma schema is correctly defined and generated." },
+        { status: 500 }
+      );
+    }
+
+    latest = await prisma.Consultation.findFirst({
       orderBy: { VisitID: "desc" },
       select: { 
         Conversation: true,
-        DigiPrescription: true  // Add this field to the selection
+        DigiPrescription: true
       },
     });
 
@@ -24,7 +33,6 @@ export async function GET() {
       );
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `Analyze this conversation and extract as JSON:
@@ -41,7 +49,7 @@ export async function GET() {
       "keyIssues": "string",
       "decisions": "string",
       "actionItems": "string",
-      "medications": "string",
+      "medications": "string"
     }`;
 
     const result = await model.generateContent(prompt);

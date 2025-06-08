@@ -29,7 +29,29 @@ export default function AppPrescription() {
   const [prescription, setPrescription] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [medications, setMedications] = useState([]);
 
+  const addMedication = () => {
+    setMedications([
+      ...medications,
+      {
+        name: "",
+        dosage: "",
+        frequency: "",
+        instructions: "",
+      },
+    ]);
+  };
+
+  const handleMedicationChange = (index, field, value) => {
+    const updatedMeds = [...medications];
+    updatedMeds[index][field] = value;
+    setMedications(updatedMeds);
+  };
+
+  const removeMedication = (index) => {
+    setMedications(medications.filter((_, i) => i !== index));
+  };
   useEffect(() => {
     const fetchAutoFill = async () => {
       try {
@@ -265,10 +287,104 @@ export default function AppPrescription() {
               </Button>
             </div>
 
-            <div className="space-y-4 flex flex-col items-center md:items-start">
-              <Button variant="outline" className="w-full">
+            <div className="space-y-4 w-full">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={addMedication}
+              >
                 <Plus className="mr-2 h-4 w-4" /> Add Medication
               </Button>
+
+              <div className="space-y-4">
+                {medications.map((med, index) => (
+                  <Card key={index}>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">
+                        Medication #{index + 1}
+                      </CardTitle>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => removeMedication(index)}
+                      >
+                        <X className="h-4 w-4 text-destructive" />
+                      </Button>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div className="space-y-1">
+                        <Label htmlFor={`med-name-${index}`}>Name</Label>
+                        <Input
+                          id={`med-name-${index}`}
+                          value={med.name}
+                          onChange={(e) =>
+                            handleMedicationChange(
+                              index,
+                              "name",
+                              e.target.value
+                            )
+                          }
+                          placeholder="e.g., Amoxicillin"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                          <Label htmlFor={`med-dosage-${index}`}>Dosage</Label>
+                          <Input
+                            id={`med-dosage-${index}`}
+                            value={med.dosage}
+                            onChange={(e) =>
+                              handleMedicationChange(
+                                index,
+                                "dosage",
+                                e.target.value
+                              )
+                            }
+                            placeholder="e.g., 500mg"
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <Label htmlFor={`med-frequency-${index}`}>
+                            Frequency
+                          </Label>
+                          <Input
+                            id={`med-frequency-${index}`}
+                            value={med.frequency}
+                            onChange={(e) =>
+                              handleMedicationChange(
+                                index,
+                                "frequency",
+                                e.target.value
+                              )
+                            }
+                            placeholder="e.g., Twice daily"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1">
+                        <Label htmlFor={`med-instructions-${index}`}>
+                          Special Instructions
+                        </Label>
+                        <Input
+                          id={`med-instructions-${index}`}
+                          value={med.instructions}
+                          onChange={(e) =>
+                            handleMedicationChange(
+                              index,
+                              "instructions",
+                              e.target.value
+                            )
+                          }
+                          placeholder="e.g., Take with food"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
 
               <Button variant="outline" className="w-full">
                 Save as PDF
