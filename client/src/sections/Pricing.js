@@ -59,7 +59,7 @@ function Pricing() {
         <h3 className="text-3xl font-medium text-center mt-6 max-w-3xl mx-auto">
           Subscription Plans for Every Practice
         </h3>
-        <p className="text-center text-[22px] mt-5">
+        <p className="text-center text-xl mt-5 text-muted-foreground">
           Start free and scale as your clinic grows with MediScribe's flexible SaaS plans.
         </p>
 
@@ -101,11 +101,9 @@ function Pricing() {
                     </span>
                   </div>
                   <Button
+                    variant={"outline"}
                     className={cn(
                       "mt-6 w-full",
-                      plan.popular
-                        ? "bg-white text-black hover:bg-gray-100"
-                        : ""
                     )}
                   >
                     {plan.buttonText}

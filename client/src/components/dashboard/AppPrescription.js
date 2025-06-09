@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,8 @@ import Loader from "../ui/loader";
 import { Checkbox } from "../ui/checkbox";
 import { Textarea } from "../ui/textarea";
 import SignaturePad from "@/components/dashboard/AppSignaturePad";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 export default function AppPrescription() {
   const [formData, setFormData] = useState({
     name: "",
@@ -21,7 +23,7 @@ export default function AppPrescription() {
     keyIssues: "",
     decisions: "",
     medications: "",
-    dietaryPreferences: [], // Added to store dietary preferences
+    dietaryPreferences: [],
   });
 
   const [conversation, setConversation] = useState("");
@@ -39,6 +41,102 @@ export default function AppPrescription() {
         instructions: "",
       },
     ]);
+  };
+  const printRef = useRef(null);
+
+  const handleDownloadPdf = async () => {
+    try {
+      const element = printRef.current;
+      if (!element) {
+        console.error("Element not found");
+        return;
+      }
+
+      // Create a deep clone of the element to avoid modifying the original
+      const clone = element.cloneNode(true);
+
+      // Position the clone off-screen
+      clone.style.position = "absolute";
+      clone.style.left = "-9999px";
+      clone.style.top = "0";
+      clone.style.width = `${element.offsetWidth}px`;
+      clone.style.backgroundColor = "#ffffff";
+      clone.style.color = "#000000";
+      clone.style.padding = "20px";
+      // Append to body temporarily
+      document.body.appendChild(clone);
+
+      // Convert all oklch/oklab colors to safe RGB/HEX
+      const allElements = clone.querySelectorAll("*");
+      allElements.forEach((el) => {
+        const computed = window.getComputedStyle(el);
+
+        const sanitizeColor = (value) => {
+          if (value.includes("oklch") || value.includes("oklab")) {
+            return "#000000"; // fallback text/border color
+          }
+          return value;
+        };
+
+        const sanitizeBg = (value) => {
+          if (value.includes("oklch") || value.includes("oklab")) {
+            return "#ffffff"; // fallback background
+          }
+          return value;
+        };
+
+        el.style.color = sanitizeColor(computed.color);
+        el.style.backgroundColor = sanitizeBg(computed.backgroundColor);
+
+        const colorProps = [
+          "borderColor",
+          "borderTopColor",
+          "borderRightColor",
+          "borderBottomColor",
+          "borderLeftColor",
+        ];
+
+        colorProps.forEach((prop) => {
+          const current = computed.getPropertyValue(prop);
+          if (current.includes("oklch") || current.includes("oklab")) {
+            el.style.setProperty(prop, "#000000");
+          }
+        });
+      });
+
+      // Render to canvas
+      const canvas = await html2canvas(clone, {
+        scale: 1.5,
+        logging: true,
+        backgroundColor: "#ffffff",
+        useCORS: true,
+        allowTaint: true,
+        ignoreElements: (element) => {
+          return element.classList?.contains("no-print");
+        },
+      });
+
+      document.body.removeChild(clone);
+
+      if (canvas.width === 0 || canvas.height === 0) {
+        throw new Error("Canvas is empty");
+      }
+
+      const imgData = canvas.toDataURL("image/jpeg");
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
+
+      const imgWidth = 210;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
+      pdf.save(`report-${new Date().toISOString().slice(0, 10)}.pdf`);
+    } catch (error) {
+      console.error("PDF generation error:", error);
+      alert("Failed to generate PDF. Please check console for details.");
+    }
   };
 
   const handleMedicationChange = (index, field, value) => {
@@ -130,7 +228,19 @@ export default function AppPrescription() {
       toast.error("Failed to save prescription to database");
     }
   };
-
+  const handleClear = () => {
+    setFormData({
+      name: "",
+      age: "",
+      healthGoals: "",
+      allergies: "",
+      conditions: "",
+      keyIssues: "",
+      decisions: "",
+      medications: "",
+      dietaryPreferences: [],
+    });
+  };
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -145,7 +255,7 @@ export default function AppPrescription() {
         <CardContent>
           <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
             <div>
-              <h2 className="text-2xl font-semibold text-primary">
+              <h2 className="text-2xl font-semibold text-cyan-500 mb-2">
                 Digital Prescription
               </h2>
               <p className="text-sm text-muted-foreground">
@@ -154,14 +264,16 @@ export default function AppPrescription() {
             </div>
 
             <div className="flex gap-2">
-              <Button variant="outline">
+              <Button variant="outline" onClick={handleDownloadPdf}>
                 Save as PDF
               </Button>
-              <Button variant="outline">Print</Button>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          {/* printRef element */}
+          <div
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"
+            ref={printRef}
+          >
             <div className="md:col-span-2 space-y-4">
               <div className="flex items-center space-x-2">
                 <Label className="w-1/3">Patient Name</Label>
@@ -268,15 +380,20 @@ export default function AppPrescription() {
               </div>
               {/* Doctor's Signature */}
               <div className="space-y-3">
-                <label className="block text-sm font-medium">
-                  Doctor's Signature
-                </label>
-                <SignaturePad
-                  onSave={(signature) => handleChange("signature", signature)}
-                />
+                <div className="no-print">
+                  <label className="block text-sm font-medium">
+                    Doctor's Signature
+                  </label>
+                  <SignaturePad
+                    onSave={(signature) => handleChange("signature", signature)}
+                  />
+                </div>
+
                 {formData.signature && (
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">Saved signature:</p>
+                    <p className="text-sm text-muted-foreground">
+                      Saved signature:
+                    </p>
                     <img
                       src={formData.signature}
                       alt="Doctor's signature"
@@ -285,15 +402,27 @@ export default function AppPrescription() {
                   </div>
                 )}
               </div>
-              <Button className="w-full bg-cyan-500" onClick={handleFinalize}>
-                Finalize & Send
-              </Button>
+              <div className="flex gap-2 justify-between mt-2">
+                <Button
+                  className="bg-cyan-500 no-print hover:bg-cyan-600"
+                  onClick={handleFinalize}
+                >
+                  Finalize & Send
+                </Button>
+                <Button
+                  className="no-print"
+                  onClick={handleClear}
+                  variant={"outline"}
+                >
+                  Clear Data
+                </Button>
+              </div>
             </div>
             {/* Medications */}
             <div className="space-y-4 w-full">
               <Button
                 variant="outline"
-                className="w-full"
+                className="w-full no-print"
                 onClick={addMedication}
               >
                 <Plus className="mr-2 h-4 w-4" /> Add Medication

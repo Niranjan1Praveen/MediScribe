@@ -89,7 +89,7 @@ export default function AppLiveConversation() {
         id: toastId,
       });
     }
-    setTimeout(() => router.push("/dashboard"), 1000);
+    setTimeout(() => router.push("/dashboard/digiPrescription"), 1000);
   };
 
   const handleStartRecording = () => {
@@ -129,7 +129,7 @@ export default function AppLiveConversation() {
     <div className="flex items-center justify-center p-4">
       <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
         <div className="flex-1 flex flex-col items-center">
-          <h2 className="text-2xl font-semibold text-primary mb-1">
+          <h2 className="text-2xl font-semibold text-cyan-500 mb-1">
             Live Conversation Capture
           </h2>
           <p className="text-sm text-muted-foreground mb-2">

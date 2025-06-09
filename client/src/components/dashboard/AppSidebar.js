@@ -7,7 +7,9 @@ import {
   ChevronUp,
   Search,
   Mic2,
-  Mic
+  Mic,
+  Home,
+  FileText
 } from "lucide-react";
 
 import {
@@ -35,14 +37,19 @@ import {
 
 const items = [
   {
-    title: "Digital Prescription",
-    url: "/dashboard",
-    icon: Stethoscope,
+    title: "Documentation",
+    url: "/dashboard/",
+    icon: FileText,
   },
   {
     title: "Live Conversation",
     url: "/dashboard/liveConversation",
     icon: Mic,
+  },
+  {
+    title: "Digital Prescription",
+    url: "/dashboard/digiPrescription",
+    icon: Stethoscope,
   },
   {
     title: "Search Prescription",
