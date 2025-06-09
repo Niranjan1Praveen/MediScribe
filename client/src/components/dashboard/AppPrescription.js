@@ -382,7 +382,7 @@ export default function AppPrescription() {
               <div className="space-y-3">
                 <div className="no-print">
                   <label className="block text-sm font-medium">
-                    Doctor's Signature
+                    Doctor&apos;s Signature
                   </label>
                   <SignaturePad
                     onSave={(signature) => handleChange("signature", signature)}
