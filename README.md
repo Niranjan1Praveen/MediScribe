@@ -21,7 +21,7 @@
 
 ## A Brief of the Prototype:
 
-*Interact with the UI of the website here* – [https://your-mediscribe-app.vercel.app/](https://your-mediscribe-app.vercel.app/)
+*Interact with the UI of the website here* – [https://medi-scribe-pi.vercel.app/](https://medi-scribe-pi.vercel.app/)
 
 MediScribe is a modular SaaS platform designed to **streamline clinical workflows** by automating doctor–patient interactions, generating structured notes, digital prescriptions, and personalized diet & exercise plans. Built with **Next.js** on the frontend and **Python (FastAPI/Flask)** in the backend, MediScribe leverages **Gemini API** for real-time transcription and NLP extraction, and integrates with **Stripe** for subscription management and **FHIR** for EMR interoperability.
 
