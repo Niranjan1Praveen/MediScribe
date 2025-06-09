@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>AI-Powered Fitness Generator</title>
+    <style>
+        #suggestions {
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            position: absolute;
+            background: white;
+            width: 250px;
+        }
+        .suggestion {
+            padding: 5px;
+            cursor: pointer;
+        }
+        .suggestion:hover {
+            background: #f0f0f0;
+        }
+        #diet-plan-editor {
+            width: 100%;
+            height: 300px;
+            display: none;
+        }
+        #plan-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI-Powered Fitness Generator</h1>
+    <form action="/generate-plan" method="POST" autocomplete="off">
+        <label for="patient_name">Patient Name:</label>
+        <input type="text" id="patient_name" name="patient_name" required />
+        <div id="suggestions"></div>
+        <button type="submit">Generate Plan</button>
+    </form>
+
+    {% if full_plan %}
+    <h2>Fitness Plan for {{ patient_name }}</h2>
+    <div id="plan-container">
+        <pre id="diet-plan-display">{{ full_plan }}</pre>
+        <textarea id="diet-plan-editor">{{ full_plan }}</textarea>
+        <button type="button" onclick="toggleEdit()">Doctor Edit</button>
+    </div>
+    {% endif %}
+
+    <script>
+        const input = document.getElementById("patient_name");
+        const suggestionsDiv = document.getElementById("suggestions");
+
+        input.addEventListener("input", async () => {
+            const query = input.value.trim();
+            if (query.length === 0) {
+                suggestionsDiv.innerHTML = "";
+                return;
+            }
+
+            const res = await fetch(`/search-patients?q=${encodeURIComponent(query)}`);
+            const results = await res.json();
+
+            suggestionsDiv.innerHTML = "";
+            results.forEach(name => {
+                const div = document.createElement("div");
+                div.classList.add("suggestion");
+                div.textContent = name;
+                div.addEventListener("click", () => {
+                    input.value = name;
+                    suggestionsDiv.innerHTML = "";
+                });
+                suggestionsDiv.appendChild(div);
+            });
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!suggestionsDiv.contains(e.target) && e.target !== input) {
+                suggestionsDiv.innerHTML = "";
+            }
+        });
+
+        function toggleEdit() {
+            const pre = document.getElementById("diet-plan-display");
+            const textarea = document.getElementById("diet-plan-editor");
+
+            if (textarea.style.display === "none") {
+                pre.style.display = "none";
+                textarea.style.display = "block";
+            } else {
+                pre.textContent = textarea.value;
+                textarea.style.display = "none";
+                pre.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

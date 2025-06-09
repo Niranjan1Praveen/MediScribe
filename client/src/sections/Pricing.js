@@ -22,7 +22,7 @@ const pricingPlans = [
   },
   {
     title: "Pro Clinic",
-    price: "₹1,499",
+    price: "₹350",
     frequency: "/month",
     buttonText: "Upgrade Now",
     features: [

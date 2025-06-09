@@ -1,166 +1,130 @@
 # Cyfuture AI Hackathon 1.0
 
-**Team Name** - CODE4CHANGE
-**Team Members**:
+*Team Name* – CODE4CHANGE  
+*Team Members*:
+- Debshata Choudhury  
+- Niranjan Praveen  
+- Abhishek Chaubhey  
+- Vaibhav Jain  
+- Pratham Ranjan  
 
-* Debshata Choudhury
-* Niranjan Praveen
-* Abhishek Chaubhey
-* Vaibhav Jain
-* Pratham Ranjan
-
-**Problem Statement** - Transport & Logistics Optimization for Rural India
-**Team Leader Email** - [debshatachoudhury@gmail.com](mailto:debshatachoudhury@gmail.com)
+*Problem Statement* – Automated Clinical Documentation: Use voice recognition and NLP to generate accurate clinical notes automatically.  
+*Team Leader Email* – [debshatachoudhury@gmail.com](mailto:debshatachoudhury@gmail.com)
 
 ---
 
 ## Web App Title:
 
-**MediScribe – Quantum Enhanced Circular Logistics App for Truck Drivers**
+**MediScribe – AI-Powered Clinical Documentation & Assistant WebApp**
 
 ---
 
 ## A Brief of the Prototype:
 
-**Interact with the UI of the website here** – [https://vahaan-bandhu.vercel.app/](https://vahaan-bandhu.vercel.app/)
+*Interact with the UI of the website here* – [https://your-mediscribe-app.vercel.app/](https://your-mediscribe-app.vercel.app/)
 
-VaahanBandhu, built by Team CODE4CHANGE, addresses rural India's inefficient agricultural transport network by enabling **circular logistics** for **truck drivers**, while maximizing outcomes for **farmers** and **input dealers**.
+MediScribe is a modular SaaS platform designed to **streamline clinical workflows** by automating doctor–patient interactions, generating structured notes, digital prescriptions, and personalized diet & exercise plans. Built with **Next.js** on the frontend and **Python (FastAPI/Flask)** in the backend, MediScribe leverages **Gemini API** for real-time transcription and NLP extraction, and integrates with **Stripe** for subscription management and **FHIR** for EMR interoperability.
 
-Using **Next.js** for the frontend and **Python AI models** in the backend, the app intelligently matches crop loads with available transport, reduces empty return trips, and ensures timely delivery through optimized routing. The system combines **classical AI** and **quantum computing techniques** to make route selection smarter and faster, while remaining affordable and scalable for rural communities.
-
----
-
-![Landing Page Preview](./designs/landingPage.png)
-![Documentation Preview](./designs/documentation.png)
-![Live Conversation Preview](./designs/liveConversation.png)
-![Digi Prescription Preview](./designs/digiPrescription.png)
+![Landing Page Preview](./designs/landingPage.png)  
+![Documentation Preview](./designs/documentation.png)  
+![Live Conversation Preview](./designs/liveConversation.png)  
+![Digi Prescription Preview](./designs/digiPrescription.png)  
 ![Search Prescription Preview](./designs/searchPrescription.png)
 
-
+---
 
 ## Key Features Include:
 
-* **AI-Powered Route Optimization** – Smart algorithms reduce travel time and fuel usage.
-* **Quantum-Enhanced Pathfinding** – Quantum logic processes multiple routes simultaneously to find optimal logistics paths.
-* **Real-Time Tracking** – Users receive live updates via GPS-based tracking systems.
-* **Demand Forecasting** – AI models predict future transport needs based on usage data.
-* **Farmer-Truck Coordination** – Matches supply with transport capacity through a smart interface.
-* **Circular Logistics** – Promotes a profit-sharing return-trip model to maximize vehicle usage.
-* **Multi-User Roles**:
-
-  * **Farmers** – Post crop delivery requests.
-  * **Truck Drivers** – Find loads and optimize round trips.
-  * **Input Dealers** – Manage agri-input transportation.
+- **Voice Transcription & NLP** – Real-time doctor–patient conversation capture and structured note extraction via Gemini Speech-to-Text and NLP models.  
+- **Digital Prescription Generator** – Create, edit, and download prescriptions with digital signature support.  
+- **Diet & Exercise Recommendation Engine** – AI-driven, personalized health plans based on patient data.  
+- **Clinician Review Interface** – Intuitive dashboard for review, editing, and approval of AI outputs.  
+- **Subscription Management** – Stripe-powered tiered SaaS billing and access control.  
+- **EMR Integration** – Optional FHIR API connectivity for seamless data exchange.  
+- **Multi-User Roles**:
+  - *Doctor* – Conduct consultations and finalize notes.  
+  - *Assistant* – Manage audio uploads and preliminary reviews.  
+  - *Admin* – Configure subscriptions, user roles, and system settings.  
 
 ---
 
-## Quantum Computing Integration (Simplified Overview)
+## AI & Cloud Integration (Simplified Overview)
 
-Here are the key quantum computing concepts used in the code:
+### Gemini Speech-to-Text Pipeline
+- Capture live audio via WebRTC.  
+- Stream to **Gemini Speech-to-Text API** for low-latency transcription.  
 
-### Qubit Encoding
+### Gemini API NLP Extraction
+- Parse transcripts into **chief complaints**, **history**, **diagnosis**, and **treatment** sections.  
+- Extract critical clinical entities using MedSpaCy.
 
-* Traffic is encoded as qubits: `|0⟩ = bad`, `|1⟩ = good`.
-* `qc.x(i)` flips qubits based on traffic score (e.g., >70% = good traffic).
-
-### Quantum Entanglement
-
-* `qc.cx(i, i+1)` gates create correlation between road segments.
-* Helps evaluate connected routes as a unit (if one is bad, others likely are too).
-
-### Measurement & Probabilistic Output
-
-* `qc.measure_all()` collapses qubits into classical bits.
-* The most frequent outcome (`max(counts)`) suggests the best path.
-
-### Quantum Parallelism
-
-* Evaluates **2ⁿ** routes at once using quantum superposition.
-
-### Hybrid Approach
-
-* Classical logic handles UI, maps, and API integrations.
-* Quantum logic optimizes critical route segments (up to 5-qubit simulations).
-* Results are visualized using **Folium** for map rendering.
-
-This hybrid quantum-classical design demonstrates how **emerging quantum tech** can solve real-world challenges in logistics — even within today's hardware limits.
+### API & Third-Party Services
+- **Stripe** for secure, PCI-compliant billing.  
+- **FHIR** endpoints for EMR interoperability (optional).  
+- **HelloSign** for digital signature on prescriptions.
 
 ---
 
 ## Technology Stack:
 
-* **Frontend**: Next.js (React Framework)
-* **Backend**: Python (FastAPI or Flask), AI Models (Scikit-learn, TensorFlow), Quantum Logic (Qiskit)
-* **Database**: PrismaDB /Supabase/ PostgreSQL
-* **Real-Time Updates**: WebSockets, GPS APIs, TomTom API
-* **Deployment**: Vercel (Frontend), Render (Backend)
+- **Frontend**: Next.js, Tailwind CSS, ShadCN UI  
+- **Backend**: FastAPI or Flask (Python), Qiskit (for future quantum-powered analytics)  
+- **AI/ML**: Gemini API, MedSpaCy, Scikit-learn  
+- **Database**: PostgreSQL (via Prisma/Supabase)  
+- **Realtime Updates**: WebSockets, Redis  
+- **Deployment**: Vercel (frontend), Render or AWS (backend)  
 
 ---
 
 ## Code Execution Instructions:
 
-### 1. Clone the Repository
-
+### 1. Clone the Repository  
 ```bash
-git clone https://github.com/Niranjan1Praveen/VahaanBandhu.git  
-cd vaahanbandhu
+git clone https://github.com/YourOrg/medi-scribe.git
+cd medi-scribe
 ```
 
----
-
-### 2. Install Frontend Dependencies (Next.js)
-
+### 2. Install Frontend Dependencies  
 ```bash
 cd client
 npm install
 ```
 
----
-
-### 3. Install Backend Dependencies (Python API)
-
+### 3. Install Backend Dependencies  
 ```bash
-cd ../server/truckroutenavigator
+cd ../server
 pip install -r requirements.txt
 ```
 
----
+### 4. Start Development Servers  
 
-### 4. Start the Application
-
-#### Start Frontend (Next.js):
-
+#### Frontend (Next.js)  
 ```bash
-cd ../../client
+cd client
 npm run dev
 ```
 
-#### Start Backend (Python):
-
+#### Backend (FastAPI/Flask)  
 ```bash
-cd ../server/truckroutenavigator
+cd ../server
 python app.py
 ```
 
----
-
-### 5. Access the Application
-
-Visit `http://localhost:3000` in your browser to start using the platform.
+### 5. Access the Application  
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## Scalability, Sustainability, and Affordability Plan:
+## Scalability & Business Model:
 
-* **Farmer Reach**: Onboarding via FPOs, agri-input dealers, and regional agents.
-* **Scalability**: Modular backend allows rollout to new geographies and logistics clusters.
-* **Sustainability**: Revenue model from commercial transporters and analytics services.
-* **Affordability**: Core services are free for farmers; subsidized via B2B partnerships.
+- **Subscription Model**: Tiered pricing per clinic, with volume discounts.  
+- **Enterprise Integrations**: EMR interoperability for hospitals and chains.  
+- **Security & Compliance**: HIPAA/GDPR-ready encryption, role-based access controls.  
+- **Modular Architecture**: Easy feature rollout (mobile app, multilingual, analytics).  
+- **Affordability**: Pay-as-you-grow pricing, free basic tier for small practices.
 
 ---
 
 ## Summary
 
-VaahanBandhu sets a new standard for rural transportation optimization. By combining AI, quantum computing, and user-centric design, it makes logistics **faster, fairer, and more efficient** — empowering farmers and truckers alike.
-
----
+MediScribe transforms clinical documentation with an **AI-first approach**, combining real-time transcription, structured note extraction via **Gemini API**, and personalized health recommendations into a seamless SaaS platform—empowering clinicians to **reduce administrative overhead**, **improve patient engagement**, and **enhance care quality** in any healthcare setting.
