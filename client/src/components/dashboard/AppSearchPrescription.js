@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Trash } from "lucide-react";
 
 export default function AppSearchPrescription() {
   const [patients, setPatients] = useState([]);
@@ -78,8 +79,8 @@ export default function AppSearchPrescription() {
             {loading ? "Searching..." : "Search"}
           </Button>
         </div>
-
-        <Select onValueChange={handlePatientSelect}>
+        <div className="flex justify-between gap-2"> 
+          <Select onValueChange={handlePatientSelect}>
           <SelectTrigger>
             <SelectValue placeholder="Select a patient" />
           </SelectTrigger>
@@ -91,6 +92,10 @@ export default function AppSearchPrescription() {
             ))}
           </SelectContent>
         </Select>
+          <Button variant={"destructive"}><Trash/> Delete</Button>
+
+        </div>
+       
 
         {selectedPatient && (
           <div className="space-y-2 p-4 border rounded-lg">

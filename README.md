@@ -16,7 +16,7 @@
 
 ## Web App Title:
 
-**VaahanBandhu – Quantum Enhanced Circular Logistics App for Truck Drivers**
+**MediScribe – Quantum Enhanced Circular Logistics App for Truck Drivers**
 
 ---
 
@@ -31,8 +31,12 @@ Using **Next.js** for the frontend and **Python AI models** in the backend, the 
 ---
 
 ![Landing Page Preview](./designs/landingPage.png)
-![Vehicle Request Preview](./designs/vehicleRequest.png)
-![Enterprise Resource Planning](./designs/ERP.png)
+![Documentation Preview](./designs/documentation.png)
+![Live Conversation Preview](./designs/liveConversation.png)
+![Digi Prescription Preview](./designs/digiPrescription.png)
+![Search Prescription Preview](./designs/searchPrescription.png)
+
+
 
 ## Key Features Include:
 
