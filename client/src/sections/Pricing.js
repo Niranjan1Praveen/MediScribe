@@ -60,7 +60,7 @@ function Pricing() {
           Subscription Plans for Every Practice
         </h3>
         <p className="text-center text-xl mt-5 text-muted-foreground">
-          Start free and scale as your clinic grows with MediScribe's flexible SaaS plans.
+          Start free and scale as your clinic grows with MediScribe&apos;s flexible SaaS plans.
         </p>
 
         <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 items-center lg:items-end mx-auto">
