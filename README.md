@@ -29,13 +29,14 @@ MediScribe is a modular SaaS platform designed to **streamline clinical workflow
 ![Documentation Preview](./designs/documentation.png)  
 ![Live Conversation Preview](./designs/liveConversation.png)  
 ![Digi Prescription Preview](./designs/digiPrescription.png)  
+![Fitness Generator Preview](./designs/fitnessGenerator.png)
 ![Search Prescription Preview](./designs/searchPrescription.png)
 
 ---
 
 ## Key Features Include:
 
-- **Voice Transcription & NLP** – Real-time doctor–patient conversation capture and structured note extraction via Gemini Speech-to-Text and NLP models.  
+- **Voice Transcription & NLP** – Real-time doctor–patient conversation capture in two languages and structured note extraction via Gemini Speech-to-Text and NLP models.  
 - **Digital Prescription Generator** – Create, edit, and download prescriptions with digital signature support.  
 - **Diet & Exercise Recommendation Engine** – AI-driven, personalized health plans based on patient data.  
 - **Clinician Review Interface** – Intuitive dashboard for review, editing, and approval of AI outputs.  
@@ -44,7 +45,6 @@ MediScribe is a modular SaaS platform designed to **streamline clinical workflow
 - **Multi-User Roles**:
   - *Doctor* – Conduct consultations and finalize notes.  
   - *Assistant* – Manage audio uploads and preliminary reviews.  
-  - *Admin* – Configure subscriptions, user roles, and system settings.  
 
 ---
 
@@ -58,21 +58,13 @@ MediScribe is a modular SaaS platform designed to **streamline clinical workflow
 - Parse transcripts into **chief complaints**, **history**, **diagnosis**, and **treatment** sections.  
 - Extract critical clinical entities using MedSpaCy.
 
-### API & Third-Party Services
-- **Stripe** for secure, PCI-compliant billing.  
-- **FHIR** endpoints for EMR interoperability (optional).  
-- **HelloSign** for digital signature on prescriptions.
-
----
-
 ## Technology Stack:
 
-- **Frontend**: Next.js, Tailwind CSS, ShadCN UI  
-- **Backend**: FastAPI or Flask (Python), Qiskit (for future quantum-powered analytics)  
-- **AI/ML**: Gemini API, MedSpaCy, Scikit-learn  
+- **Frontend**: Next.js, Tailwind CSS, ShadCN UI, KindeAuth  
+- **Backend**: FastAPI, Flask (Python), Qiskit (for future quantum-powered analytics)  
+- **AI/ML**: Gemini API, Scikit-learn  
 - **Database**: PostgreSQL (via Prisma/Supabase)  
-- **Realtime Updates**: WebSockets, Redis  
-- **Deployment**: Vercel (frontend), Render or AWS (backend)  
+- **Deployment**: Vercel (frontend), Render (backend)  
 
 ---
 

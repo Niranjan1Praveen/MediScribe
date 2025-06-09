@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 from services.supabase_service import get_patient_by_name, search_patient_names
+from flask_cors import CORS  # Import CORS
 from services.gemini_service import generate_fitness_plan  # Updated function name
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/")
 def index():

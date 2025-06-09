@@ -2,50 +2,188 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI-Powered Fitness Generator</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        h1, h2 {
+            color: #22d3ee;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #22d3ee;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1.5rem;
+            background-color: #333;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #06b6d4;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         #suggestions {
-            border: 1px solid #ccc;
             max-height: 150px;
             overflow-y: auto;
             position: absolute;
-            background: white;
-            width: 250px;
+            width: calc(100% - 2rem);
+            z-index: 100;
+            border-radius: 0 0 4px 4px;
         }
+
         .suggestion {
-            padding: 5px;
+            padding: 0.8rem;
             cursor: pointer;
+            color: #fff;
         }
+
+        .suggestion:last-child {
+            border-bottom: none;
+        }
+
         .suggestion:hover {
-            background: #f0f0f0;
+            color: #fff;
         }
-        #diet-plan-editor {
-            width: 100%;
-            height: 300px;
-            display: none;
-        }
+
         #plan-container {
-            margin-top: 20px;
+            border-radius: 8px;
+            max-width: 800px;
+        }
+
+        #diet-plan-display, #diet-plan-editor {
+            width: 100%;
+            color: #fff;
+            padding: 1rem;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            margin-bottom: 1rem;
+            min-height: 300px;
+            font-family: monospace;
+            overflow-x: auto;
+            background-color: black;
+        }
+
+        #diet-plan-editor {
+            display: none;
+            resize: vertical;
+        }
+
+        .edit-btn {
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            body {
+                padding: 1rem;
+            }
+            
+            form, #plan-container {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            form, #plan-container {
+                padding: 1rem;
+            }
+            
+            input[type="text"], button {
+                padding: 0.7rem;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>AI-Powered Fitness Generator</h1>
-    <form action="/generate-plan" method="POST" autocomplete="off">
-        <label for="patient_name">Patient Name:</label>
-        <input type="text" id="patient_name" name="patient_name" required />
-        <div id="suggestions"></div>
-        <button type="submit">Generate Plan</button>
-    </form>
+    <div class="container">
+        <h1>AI-Powered Fitness Generator</h1>
+        <form action="/generate-plan" method="POST" autocomplete="off">
+            <label for="patient_name">Patient Name:</label>
+            <input type="text" id="patient_name" name="patient_name" required />
+            <div id="suggestions"></div>
+            <button type="submit">Generate Plan</button>
+        </form>
 
-    {% if full_plan %}
-    <h2>Fitness Plan for {{ patient_name }}</h2>
-    <div id="plan-container">
-        <pre id="diet-plan-display">{{ full_plan }}</pre>
-        <textarea id="diet-plan-editor">{{ full_plan }}</textarea>
-        <button type="button" onclick="toggleEdit()">Doctor Edit</button>
+        {% if full_plan %}
+        <h2>Fitness Plan for {{ patient_name }}</h2>
+        <div id="plan-container">
+            <pre id="diet-plan-display">{{ full_plan }}</pre>
+            <textarea id="diet-plan-editor">{{ full_plan }}</textarea>
+            <button type="button" onclick="toggleEdit()" class="edit-btn">Edit</button>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
 
     <script>
         const input = document.getElementById("patient_name");
@@ -83,14 +221,17 @@
         function toggleEdit() {
             const pre = document.getElementById("diet-plan-display");
             const textarea = document.getElementById("diet-plan-editor");
+            const button = document.querySelector(".edit-btn");
 
-            if (textarea.style.display === "none") {
+            if (textarea.style.display === "none" || !textarea.style.display) {
                 pre.style.display = "none";
                 textarea.style.display = "block";
+                button.textContent = "Save Changes";
             } else {
                 pre.textContent = textarea.value;
                 textarea.style.display = "none";
                 pre.style.display = "block";
+                button.textContent = "Edit";
             }
         }
     </script>

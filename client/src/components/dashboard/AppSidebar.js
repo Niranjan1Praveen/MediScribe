@@ -1,15 +1,11 @@
 import {
   Stethoscope,
-  MessageCircle,
-  Salad,
-  Dumbbell,
   User2,
   ChevronUp,
   Search,
-  Mic2,
   Mic,
-  Home,
-  FileText
+  FileText,
+  Dumbbell
 } from "lucide-react";
 
 import {
@@ -50,6 +46,11 @@ const items = [
     title: "Digital Prescription",
     url: "/dashboard/digiPrescription",
     icon: Stethoscope,
+  },
+  {
+    title: "Fitness Generator",
+    url: "http://127.0.0.1:5000",
+    icon: Dumbbell,
   },
   {
     title: "Search Prescription",
